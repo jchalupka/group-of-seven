@@ -7,6 +7,10 @@ MAX_ROWS = 11
 MAX_COLS = 14
 GROUP_COLS = 4 # group widgets in sets of four columns
 
+behind_canvas_color = "grey"
+grid_line_color = "cyan"
+axis_line_color = "black"
+
 # sets column width and allows for window resizing
 def configure_grid(root):
     for column in range(MAX_COLS):
@@ -32,6 +36,41 @@ def execute_entry(root):
     add_to_entry(root, "=")
     add_to_entry(root, answer)
 
+def draw_grid_lines(canvas, w, h, step_x, step_y):
+    i = 0
+    while i * step_x < w or i * step_y < h:
+        canvas.create_line(i * step_x, 0, i * step_x, h, fill=grid_line_color)
+        canvas.create_line(0,i * step_y, w, i * step_y, fill=grid_line_color)
+        i += 1
+    canvas.create_rectangle(0, 0, w, h, width=10, outline=behind_canvas_color)
+
+def draw_axis_lines(canvas, w, h):
+    canvas.create_line(0, h/2, w, h/2, width=2, fill=axis_line_color)
+    canvas.create_line(w/2, 0, w/2, h, width=2, fill=axis_line_color)
+
+def create_marker_points(canvas, w, h, step_x, step_y):
+    i=0
+    points = [-3,-2,-1,0,1,2,3]
+    while(i * step_x < w or i * step_y < h):
+        canvas.create_line(i * step_x, h/2 - 5, i * step_x, h/2 + 5, width=1.5, fill=axis_line_color)
+        canvas.create_line(w/2 - 5, i * step_y, w/2 + 5, i * step_y, width=1.5, fill=axis_line_color)
+
+        # Axis Labels
+        canvas.create_text(i * step_x, h/2 + 15, text=str(points[i]))
+        canvas.create_text(w/2 - 15, i * step_y, text=str(points[6-i]))
+        i+=1
+
+def draw_graph_background(canvas, event):
+    canvas.delete('all')
+    w, h = event.width, event.height
+    step_x = w/6
+    step_y = h/6
+
+    draw_grid_lines(canvas, w, h, step_x, step_y)
+    draw_axis_lines(canvas, w, h)
+    create_marker_points(canvas, w, h, step_x, step_y)
+
+
 def create_widgets(root):
     entry1_label = tk.Label(root, text="1")
     entry2_label = tk.Label(root, text="2")
@@ -50,6 +89,8 @@ def create_widgets(root):
     entry7 = tk.Entry(root, justify=tk.RIGHT)
 
     entry1.focus_set()
+
+    canvas = tk.Canvas(root, width=500, height=500)
 
     # must use lambdas to have parameters in the function that command is set to
     x = tk.Button(root, text="x", command=lambda:add_to_entry(root, "x"))
@@ -111,11 +152,14 @@ def create_widgets(root):
     entry6.grid(row=5, column=1, columnspan=GROUP_COLS, sticky=tk.W+tk.E)
     entry7.grid(row=6, column=1, columnspan=GROUP_COLS, sticky=tk.W+tk.E)
 
+    canvas.grid(row=0, column=5, columnspan=9, rowspan=7, sticky=tk.N+tk.E+tk.S+tk.W)
+    canvas.bind("<Configure>", lambda e: draw_graph_background(canvas, e))
+
     x.grid(row=8, column=1, sticky=tk.W+tk.E)
     y.grid(row=8, column=2, sticky=tk.W+tk.E)
     square.grid(row=8, column=3, sticky=tk.W+tk.E)
     power.grid(row=8, column=4, sticky=tk.W+tk.E)
-                   
+
     open_parens.grid(row=9, column=1, sticky=tk.W+tk.E)
     close_parens.grid(row=9, column=2, sticky=tk.W+tk.E)
     less_than.grid(row=9, column=3, sticky=tk.W+tk.E)
