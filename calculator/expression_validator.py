@@ -1,11 +1,12 @@
 #!/usr/bin/python
 import re
+import calculator_gui
 
 # Jordan Chalupka
 # CIS*3250
 
 # Validation of an arithmetic expression
-# This module takes an arithmatic expression as input and 
+# This module takes an arithmatic expression as input and
 #	returns if the expression is a valid arithmatic expression.
 
 # Things to check:
@@ -16,95 +17,139 @@ import re
 # Returns a boolean value representing the validity of the expression
 # Prints out a message as a side effect
 #
-def is_valid(expression):
-	valid_p = valid_parentheses(expression)
-	valid_a = valid_arithmetic_expression(expression)
-
-	# if  not valid_p:	
-	# 	print found_not_valid(found_missing_parenthesis)
-	# if not valid_a:
-	# 	print found_not_valid(found_missing_arithmetic_expression)
-	# if valid_p and valid_a:
-	# 	print found_valid()
-
-	return valid_p and valid_a
+def is_valid(expression, status_root, type):
+    response = found_valid(type)
+    if type == "Calculation":
+        valid_a = valid_arithmetic_expression(expression)
+        if not valid_a:
+        	    response = found_not_valid(found_missing_arithmetic_expression)
+    elif type == "Graph":
+        valid_a = valid_graphing_expression(expression)
+        if not valid_a:
+    	    response = found_not_valid(found_missing_graphing_expression)
+    valid_p = valid_parentheses(expression)
+    if not valid_p:
+    	 response = found_not_valid(found_missing_parenthesis)
+    calculator_gui.update_status(status_root, response)
+    #print "paratheses: " + str(valid_p)
+    #print "cal: " + str(valid_a)
+    return valid_p and valid_a
 
 #
 # Returns a boolean represening if the parenthesis are valid
 #
 def valid_parentheses(expression):
-	stack = list()
-	for x in expression:
-		if x is '(': stack.append(x) 
-		elif x is ')': 
-			if len(stack): stack.pop() 
-			else: return False
-	return True if len(stack) is 0 else False 
+    stack = list()
+    print expression
+    for x in expression:
+        if x is '(':
+            stack.append(x)
+        elif x is ')':
+            if len(stack): stack.pop()
+            else: return False
+    return True if len(stack) is 0 else False
+
+#
+# Returns the expression spereated into individual components as a list
+#
+def seperate(expression):
+	expression = expression.replace('-','+ -1 *')
+	expression = expression.replace(' ','')
+	expression = re.compile(r'(-*[A-Za-z]|-*\d+)|([\+\-\/\*\(\)\^])').split(expression)
+	expression = filter(None, expression)
+	return expression
 
 #
 # Returns a boolean representing if the arithmatic operators are valid
 #
 def valid_arithmetic_expression(expression):
-
-	expression = expression.replace('-','+ -1 *')
-	expression = expression.replace(' ','')
-	expression = re.compile(r'(-*[A-Za-z]|-*\d+)|([\+\-\/\*\(\)])').split(expression)
-	expression = filter(None, expression)
-
-
-	# Now we have an expression in list form seperated into individual componenets
-	# eg ['29', '**', '(', '59', '+', '4', '-', '3', ')', '/', '6']
-	
-	stack = expression;
-
+    stack = seperate(expression)
 	# State 0 can accept number, letter or (
 	# State 1 can accept operation or )
-	state = 0 
-	while len(stack) > 0:
-		token = stack.pop(0)
-
-		if state is 0:
+    state = 0
+    while len(stack) > 0:
+        token = stack.pop(0)
+        if state is 0:
 			if re.match('^-*[A-Za-z]|-*\d+$',token):
 				state = 1
 
 			elif re.match('^\($', token):
 				state = 0
-			else: 
+			else:
 				return False
-		elif state is 1:
-			if re.match('^[\+\-\/\*]$',token):
+        elif state is 1:
+			if re.match('^[\+\-\/\*\^]$',token):
 				state = 0
 			elif re.match('^\)$',token):
 				state = 1
-			else: 
+			else:
 				return False
 	# At the end of validation state = 1 if valid
-	if state is 1: return True 
-	else: return False
+    if state is 1: return True
+    else: return False
+
+def valid_graphing_expression(expression):
+    stack = seperate(expression)
+    # State 0 can accept number, letter or (
+    # State 1 can accept operation or )
+    state = 0
+    x = 0
+    while len(stack) > 0:
+        token = stack.pop(0)
+
+        if state is 0:
+            if re.match('^-*[xX]|-*\d+$',token):
+                state = 1
+                if token == "x":
+                    x += 1
+            elif re.match('^\($', token):
+                state = 0
+            else:
+                return False
+        elif state is 1:
+            if re.match('^[\+\-\/\*\^]$',token):
+                state = 0
+            elif re.match('^\)$',token):
+                state = 1
+            else:
+                return False
+    # At the end of validation state = 1 if valid
+    if state is 1 | x != 0: return True
+    else: return False
+
 #
 # Start of responses
 #
-def found_valid():
-	return "A valid arithmetic expression"
+def found_valid(type):
+	return "*" + type + " successfully processed"
+
+def valid_graph(expression):
+    return "*Now graphing: " + expression
+
+def Invalid_graph(reason):
+    return "*Invalid graphical expression: " + reason()
 
 def found_not_valid(reason):
-	return "An invalid arithmetic expression: " + reason() 
+	return "*An invalid arithmetic expression: " + reason()
 
 def found_missing_parenthesis():
-	return "mismatch parentheses"
+	return "*Mismatch parentheses"
 
 def found_missing_arithmetic_expression():
-	return "missing arithmetic operators/operands"
+	return "*Missing arithmetic operators/operands"
+
+def found_missing_graphing_expression():
+    return "*Missing variable x or arithmetic operators/operands"
 # End of responses
 
 #
 # Some tests
 #
-def test(expression):
+def test(expression, status_root, type):
 	#print expression
-	valid = is_valid(expression)
-	if valid: print 'Valid'
-	else: print 'Invalid'
+	valid = is_valid(expression, status_root, type)
+	#if valid: print 'Valid'
+	#else: print 'Invalid'
 	return valid
 
 def run_valid_tests():
