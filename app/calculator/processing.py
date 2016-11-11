@@ -7,7 +7,7 @@ import re
 
 Left, Right = range(2)
 
-OPERAND = "^[-+]?(pi|[exy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
+OPERAND_REGEX = "^[-+]?(pi|[exy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
 OPERATORS = set()
 
 ASSOCIATIVITY = {}
@@ -32,10 +32,6 @@ def add_function(name, function):
     FUNCTION.update({name: function})
 
 
-def convert_to_radian(x):
-    return x * math.pi / 180.0
-
-
 add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
 add_operator("*", Left, 3, lambda x, y: x + y)
@@ -50,6 +46,14 @@ add_function("asin", lambda x: math.asin(math.radians(x)))
 add_function("acos", lambda x: math.acos(math.radians(x)))
 add_function("atan", lambda x: math.atan(math.radians(x)))
 
+# Hyperbolic functions
+add_function("sinh", lambda x: math.sinh(math.radians(x)))
+add_function("cosh", lambda x: math.cosh(math.radians(x)))
+add_function("tanh", lambda x: math.tanh(math.radians(x)))
+add_function("asinh", lambda x: math.asinh(math.radians(x)))
+add_function("acosh", lambda x: math.acosh(math.radians(x)))
+add_function("atanh", lambda x: math.atanh(math.radians(x)))
+
 # Number-theoretic and representation functions
 add_function("ceil", lambda x: math.ceil(x))
 add_function("floor", lambda x: math.floor(x))
@@ -60,24 +64,16 @@ add_function("sqrt", lambda x: math.sqrt(x))
 add_function("log", lambda x: math.log10(x))
 add_function("ln", lambda x: math.log1p(x))
 
-# Hyperbolic functions
-add_function("sinh", lambda x: math.sinh(math.radians(x)))
-add_function("cosh", lambda x: math.cosh(math.radians(x)))
-add_function("tanh", lambda x: math.tanh(math.radians(x)))
-add_function("asinh", lambda x: math.asinh(math.radians(x)))
-add_function("acosh", lambda x: math.acosh(math.radians(x)))
-add_function("atanh", lambda x: math.atanh(math.radians(x)))
-
 
 # algorithm from https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-def convert_infix_to_postfix(expression):
+def infix_to_postfix(expression):
     operator_stack = []
     output_queue = []
 
     while expression:
         token = expression.pop(0)
 
-        if re.match(OPERAND, token):
+        if re.match(OPERAND_REGEX, token):
             output_queue.append(token)
         elif token in FUNCTIONS:
             operator_stack.append(token)
@@ -115,7 +111,7 @@ def convert_infix_to_postfix(expression):
     return output_queue
 
 
-def convert_string_to_num(string):
+def string_to_num(string):
     if string.find(".") == -1:
         return int(string)
     else:
@@ -123,13 +119,13 @@ def convert_string_to_num(string):
 
 
 def evaluate_binary_expression(left_operand, operator, right_operand):
-    left_operand = convert_string_to_num(left_operand)
-    right_operand = convert_string_to_num(right_operand)
+    left_operand = string_to_num(left_operand)
+    right_operand = string_to_num(right_operand)
     return OPERATION[operator](left_operand, right_operand)
 
 
 def evaluate_function_expression(function_token, operand):
-    operand = convert_string_to_num(operand)
+    operand = string_to_num(operand)
     return FUNCTION[function_token](operand)
 
 
@@ -139,7 +135,7 @@ def evaluate_postfix(expression):
     while expression:
         token = expression.pop(0)
 
-        if re.match(OPERAND, token):
+        if re.match(OPERAND_REGEX, token):
             output_stack.append(token)
         elif token == "pi":
             output_stack.append(str(math.pi))
@@ -167,10 +163,10 @@ def main():
     expression3 = ["sin", "20"]
     expression4 = ["sin", "(", "3", "/", "3", "*", "3.1415", ")"]
 
-    expression1 = convert_infix_to_postfix(expression1)
-    expression2 = convert_infix_to_postfix(expression2)
-    expression3 = convert_infix_to_postfix(expression3)
-    expression4 = convert_infix_to_postfix(expression4)
+    expression1 = infix_to_postfix(expression1)
+    expression2 = infix_to_postfix(expression2)
+    expression3 = infix_to_postfix(expression3)
+    expression4 = infix_to_postfix(expression4)
 
     print expression1, "\n", expression2, "\n", expression3, "\n", expression4
 
