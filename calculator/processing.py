@@ -7,18 +7,18 @@ import re
 
 Left, Right = range(2)
 
-OPERAND = "^[-+]?(pi|[xy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
-OPERATORS = set() 
+OPERAND = "^[-+]?(pi|[exy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
+OPERATORS = set()
 
 ASSOCIATIVITY = {}
 PRECEDENCE = {}
 OPERATION = {}
 
-# functions = set("sin cos tan log sec csc cot abs exp mod ceil floor ln".split())
 FUNCTIONS = set()
 FUNCTION = {}
 
 PARENTHESES = set("()")
+
 
 def add_operator(symbol, associativity, precedence, operation):
     OPERATORS.add(symbol)
@@ -26,12 +26,15 @@ def add_operator(symbol, associativity, precedence, operation):
     PRECEDENCE.update({symbol: precedence})
     OPERATION.update({symbol: operation})
 
+
 def add_function(name, function):
     FUNCTIONS.add(name)
     FUNCTION.update({name: function})
 
+
 def convert_to_radian(x):
     return x * math.pi / 180.0
+
 
 add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
@@ -65,6 +68,7 @@ add_function("asinh", lambda x: math.asinh(math.radians(x)))
 add_function("acosh", lambda x: math.acosh(math.radians(x)))
 add_function("atanh", lambda x: math.atanh(math.radians(x)))
 
+
 # algorithm from https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 def convert_infix_to_postfix(expression):
     operator_stack = []
@@ -79,10 +83,10 @@ def convert_infix_to_postfix(expression):
             operator_stack.append(token)
         elif token in OPERATORS:
             while operator_stack \
-                and operator_stack[-1] in OPERATORS \
-                and (ASSOCIATIVITY[token] == Left \
+              and operator_stack[-1] in OPERATORS \
+              and (ASSOCIATIVITY[token] == Left 
                 and PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
-                or (ASSOCIATIVITY[token] == Right \
+              or (ASSOCIATIVITY[token] == Right 
                 and PRECEDENCE[token] < PRECEDENCE[operator_stack[-1]]):
                 output_queue.append(operator_stack.pop())
 
@@ -110,22 +114,24 @@ def convert_infix_to_postfix(expression):
 
     return output_queue
 
+
 def convert_string_to_num(string):
     if string.find(".") == -1:
         return int(string)
     else:
         return float(string)
-            
+
+
 def evaluate_binary_expression(left_operand, operator, right_operand):
     left_operand = convert_string_to_num(left_operand)
     right_operand = convert_string_to_num(right_operand)
-
     return OPERATION[operator](left_operand, right_operand)
-            
+
+
 def evaluate_function_expression(function_token, operand):
     operand = convert_string_to_num(operand)
-
     return FUNCTION[function_token](operand)
+
 
 def evaluate_postfix(expression):
     output_stack = []
@@ -154,6 +160,7 @@ def evaluate_postfix(expression):
 
     return output_stack
 
+
 def main():
     expression1 = ["-1.5", "+", "+2", "-", "0.5"]
     expression2 = ["-3", "+", "4", "*", "2", "/", "(", "1", "-", "5", ")", "^", "2", "^", "3"]
@@ -167,10 +174,10 @@ def main():
 
     print expression1, "\n", expression2, "\n", expression3, "\n", expression4
 
-    print evaluate_postfix(expression1);
-    print evaluate_postfix(expression2);
-    print evaluate_postfix(expression3);
-    print evaluate_postfix(expression4);
+    print evaluate_postfix(expression1)
+    print evaluate_postfix(expression2)
+    print evaluate_postfix(expression3)
+    print evaluate_postfix(expression4)
 
 if __name__ == "__main__":
     main()
