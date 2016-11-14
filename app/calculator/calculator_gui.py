@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import Tkinter as tk
-import line_drawer
+import curve_drawer
 import expression_validator
 
 MIN_SIZE_PIXELS = 55
@@ -81,7 +81,7 @@ def draw_graph_background(canvas, event):
 
 def window_resize(canvas, e, line):
     draw_graph_background(canvas, e)
-    line_drawer.draw_line(canvas, e, line)
+    curve_drawer.draw_curve(canvas, e, line)
 
 def create_widgets(root):
     
@@ -168,8 +168,8 @@ def create_widgets(root):
 
     canvas.grid(row=1, column=5, columnspan=9, rowspan=7, sticky=tk.N+tk.E+tk.S+tk.W)
     # generate function should be replaced by a function that gets the function from the user, and processes, etc
-    function = line_drawer.generate_function()
-    canvas.bind("<Configure>", lambda e: window_resize(canvas, e, line_drawer.generate_line(function)))
+    function = curve_drawer.generate_function()
+    canvas.bind("<Configure>", lambda e: window_resize(canvas, e, curve_drawer.generate_line(function)))
 
     x.grid(row=9, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     y.grid(row=9, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
