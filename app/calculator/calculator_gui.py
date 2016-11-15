@@ -84,7 +84,7 @@ def window_resize(canvas, e, line):
     curve_drawer.draw_curve(canvas, e, line)
 
 def create_widgets(root):
-    
+
     status_bar = tk.Label(root, text="*", bd=1, relief=tk.SUNKEN, anchor=tk.W)
     entry1_label = tk.Label(root, text="1", width=6, bg="white smoke")
     entry2_label = tk.Label(root, text="2", width=6, bg="white smoke")
@@ -93,7 +93,7 @@ def create_widgets(root):
     entry5_label = tk.Label(root, text="5", width=6, bg="white smoke")
     entry6_label = tk.Label(root, text="6", width=6, bg="white smoke")
     entry7_label = tk.Label(root, text="7", width=6, bg="white smoke")
-    
+
     entry1 = tk.Entry(root, justify=tk.RIGHT,  highlightbackground="white smoke")
     entry2 = tk.Entry(root, justify=tk.RIGHT, highlightbackground="white smoke")
     entry3 = tk.Entry(root, justify=tk.RIGHT, highlightbackground="white smoke")
@@ -110,37 +110,44 @@ def create_widgets(root):
     y = tk.Button(root, text="y", highlightbackground="gray39", command=lambda:add_to_entry(root, "y"))
     square = tk.Button(root, text=u"a\u00B2", highlightbackground="gray39", command=lambda:add_to_entry(root, "^2"))
     power = tk.Button(root, text=u"a\u207F", highlightbackground="gray39", command=lambda:add_to_entry(root, "^"))
-    
+
     open_parens = tk.Button(root, text="(", highlightbackground="gray39", command=lambda:add_to_entry(root, "("))
     close_parens = tk.Button(root, text=")", highlightbackground="gray39", command=lambda:add_to_entry(root, ")"))
     less_than = tk.Button(root, text="<", highlightbackground="gray39", command=lambda:add_to_entry(root, "<"))
     greater_than = tk.Button(root, text=">", highlightbackground="gray39", command=lambda:add_to_entry(root, ">"))
-    
+
     absolute = tk.Button(root, text="|a|", highlightbackground="gray39", command=lambda:add_to_entry(root, "abs"))
     pi = tk.Button(root, text=u"\u03C0", highlightbackground="gray39", command=lambda:add_to_entry(root, "pi"))
     less_than_equal = tk.Button(root, text=u"\u2264", highlightbackground="gray39", command=lambda:add_to_entry(root, "<="))
     greater_than_equal = tk.Button(root, text=u"\u2265", highlightbackground="gray39", command=lambda:add_to_entry(root, ">="))
-    
+
     square_root = tk.Button(root, text=u"\u221A", highlightbackground="gray39", command=lambda:add_to_entry(root, "sqrt"))
     n_root = tk.Button(root, text=u"\u221A", highlightbackground="gray39", command=lambda:add_to_entry(root, "root"))
     remainder= tk.Button(root, text=u"\uFE6A", highlightbackground="gray39", command=lambda:add_to_entry(root, "%"))
     e = tk.Button(root, text="e", highlightbackground="gray39", command=lambda:add_to_entry(root, "e"))
-    
+
     seven = tk.Button(root, text="7", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "7"))
     eight = tk.Button(root, text="8", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "8"))
     nine = tk.Button(root, text="9", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "9"))
     divide = tk.Button(root, text=u"\u00F7", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "/"))
-    
+
     four = tk.Button(root, text="4", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "4"))
     five = tk.Button(root, text="5", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "5"))
     six = tk.Button(root, text="6", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "6"))
     multiply = tk.Button(root, text=u"\u00D7", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "*"))
-    
+
     one = tk.Button(root, text="1", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "1"))
     two = tk.Button(root, text="2", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "2"))
     three = tk.Button(root, text="3", highlightbackground="DarkOrange1",command=lambda:add_to_entry(root, "3"))
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
-    
+
+    varX = tk.StringVar()
+    varX.set("1")
+    rangeX = tk.OptionMenu(root, varX, "1","2","3","4","5","6","7","8","9","10")
+    varY = tk.StringVar()
+    varY.set("1")
+    rangeY = tk.OptionMenu(root, varY, "1","2","3","4","5","6","7","8","9","10")
+
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
     negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
@@ -156,7 +163,7 @@ def create_widgets(root):
     entry5_label.grid(row=5, column=0, ipady=16, sticky=tk.N+tk.W+tk.E)
     entry6_label.grid(row=6, column=0, ipady=16, sticky=tk.N+tk.W+tk.E)
     entry7_label.grid(row=7, column=0, ipady=16, sticky=tk.N+tk.W+tk.E)
-    
+
     status_bar.grid(row=0, column=0, columnspan=MAX_COLS, sticky=tk.N+tk.E+tk.W)
     entry1.grid(row=1, column=1, columnspan=GROUP_COLS, ipady=13, sticky=tk.N+tk.W+tk.E)
     entry2.grid(row=2, column=1, columnspan=GROUP_COLS, ipady=13, sticky=tk.N+tk.W+tk.E)
@@ -175,42 +182,43 @@ def create_widgets(root):
     y.grid(row=9, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     square.grid(row=9, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     power.grid(row=9, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     open_parens.grid(row=10, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     close_parens.grid(row=10, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     less_than.grid(row=10, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     greater_than.grid(row=10, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     absolute.grid(row=11, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     pi.grid(row=11, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     less_than_equal.grid(row=11, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     greater_than_equal.grid(row=11, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     square_root.grid(row=12, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     n_root.grid(row=12, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     remainder.grid(row=12, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     e.grid(row=12, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     seven.grid(row=9, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     eight.grid(row=9, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     nine.grid(row=9, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     divide.grid(row=9, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     four.grid(row=10, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     five.grid(row=10, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     six.grid(row=10, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     multiply.grid(row=10, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     one.grid(row=11, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     two.grid(row=11, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     three.grid(row=11, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     subtract.grid(row=11, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     zero.grid(row=12, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     decimal.grid(row=12, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     negative.grid(row=12, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     add.grid(row=12, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+    rangeX.grid(row=10, column=11, ipadx=10, ipady=2)
+    rangeY.grid(row=12, column=11,ipadx=10,ipady=2)
     graph.grid(row=9, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
     go.grid(row=11, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
 
