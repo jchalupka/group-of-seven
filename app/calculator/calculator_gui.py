@@ -182,8 +182,8 @@ def create_widgets(root):
     three = tk.Button(root, text="3", highlightbackground="DarkOrange1",command=lambda:add_to_entry(root, "3"))
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
-    rangeUp = tk.Button(root,text=u"\u2191 ", command=lambda: rangeIncre())
-    rangeDown = tk.Button(root,text=u"\u2193", command=lambda: rangeDecre())
+    rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75", command=lambda: rangeIncre())
+    rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75",command=lambda: rangeDecre())
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
