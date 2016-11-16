@@ -2,12 +2,13 @@
 
 from __future__ import division
 
+import error_messages as err
 import math
 import re
 
 Left, Right = range(2)
 
-OPERAND_REGEX = "^[-+]?(pi|[exy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
+OPERAND_REGEX = "^[-]?(pi|[exy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
 OPERATORS = set()
 
 ASSOCIATIVITY = {}
@@ -35,7 +36,7 @@ def add_function(name, function):
 add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
 add_operator("*", Left, 3, lambda x, y: x * y)
-add_operator("/", Left, 3, lambda x, y: x / y)
+add_operator("/", Left, 3, lambda x, y: divide(x, y))
 add_operator("^", Right, 4, lambda x, y: x ** y)
 
 # Trigonometric functions
@@ -47,22 +48,63 @@ add_function("acos", lambda x: math.acos(math.radians(x)))
 add_function("atan", lambda x: math.atan(math.radians(x)))
 
 # Hyperbolic functions
-add_function("sinh", lambda x: math.sinh(math.radians(x)))
-add_function("cosh", lambda x: math.cosh(math.radians(x)))
-add_function("tanh", lambda x: math.tanh(math.radians(x)))
-add_function("asinh", lambda x: math.asinh(math.radians(x)))
-add_function("acosh", lambda x: math.acosh(math.radians(x)))
-add_function("atanh", lambda x: math.atanh(math.radians(x)))
+add_function("sinh", lambda x: math.sinh(x))
+add_function("cosh", lambda x: math.cosh(x))
+add_function("tanh", lambda x: math.tanh(x))
+add_function("asinh", lambda x: math.asinh(x))
+add_function("acosh", lambda x: math.acosh(x))
+add_function("atanh", lambda x: math.atanh(x))
 
 # Number-theoretic and representation functions
 add_function("ceil", lambda x: math.ceil(x))
 add_function("floor", lambda x: math.floor(x))
 add_function("abs", lambda x: math.fabs(x))
+add_function("!", lambda x: math.factorial(x))
 
 # Power and logarithmic functions
 add_function("sqrt", lambda x: math.sqrt(x))
 add_function("log", lambda x: math.log10(x))
 add_function("ln", lambda x: math.log1p(x))
+
+
+Min, Max = range(2)
+
+
+def validate_domain(domain): 
+    try:
+        min = int(domain[Min])
+        max = int(domain[Max])
+    except ValueError:
+        return "Invalid range"
+
+    if min >= max:
+        return "Invalid range"
+
+    return (min, max)
+
+
+def evaluate_expression(expression, domain):
+    # validated_expression = validate_expression(expression)
+    # if validated_expression in err.ERROR_MESSAGES:
+    #     return validated_expression
+    # else:
+        # postfix_expression = infix_to_postfix(validated_expression)
+        postfix_expression = infix_to_postfix(expression)
+        # maybe make expression validator change everything to lowercase 
+        if "x" in postfix_expression:
+            validated_domain = validate_domain(domain)
+            if validated_domain in err.ERROR_MESSAGES:
+                return validated_domain
+            else:
+
+
+
+
+def maintain_precedence(operator_stack):
+    return (ASSOCIATIVITY[token] == Left and
+            PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
+        or (ASSOCIATIVITY[token] == Right and
+            PRECEDENCE[token] < PRECEDENCE[operator_stack[-1]])
 
 
 # algorithm from https://en.wikipedia.org/wiki/Shunting-yard_algorithm
@@ -80,10 +122,7 @@ def infix_to_postfix(expression):
         elif token in OPERATORS:
             while operator_stack \
               and operator_stack[-1] in OPERATORS \
-              and (ASSOCIATIVITY[token] == Left 
-                and PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
-              or (ASSOCIATIVITY[token] == Right 
-                and PRECEDENCE[token] < PRECEDENCE[operator_stack[-1]]):
+              and maintain_precedence(operator_stack):
                 output_queue.append(operator_stack.pop())
 
             operator_stack.append(token)
@@ -97,14 +136,12 @@ def infix_to_postfix(expression):
             if operator_stack[-1] in FUNCTIONS:
                 output_queue.append(operator_stack.pop())
         else:
-            print "invalid token: ", token
-            exit(1)
+            return "Invalid token"
 
     while operator_stack:
         operator = operator_stack.pop()
         if operator in PARENTHESES:
-            print "mismatched parentheses"
-            exit(1)
+            return "Mismatched parentheses"
         else:
             output_queue.append(operator)
 
@@ -112,10 +149,17 @@ def infix_to_postfix(expression):
 
 
 def string_to_num(string):
-    if string.find(".") == -1:
-        return int(string)
-    else:
+    if string.find(".") != -1:
         return float(string)
+    else:
+        return int(string)
+
+
+def divide(dividend, divisor):
+    if divisor == 0:
+        return "Divide by zero"
+    else:
+        return dividend / divisor
 
 
 def evaluate_binary_expression(left_operand, operator, right_operand):
@@ -142,38 +186,16 @@ def evaluate_postfix(expression):
         elif token == "e":
             output_stack.append(str(math.e))
         elif token in OPERATORS:
-            right_operand = output_stack.pop()
-            left_operand = output_stack.pop()
-            result = evaluate_binary_expression(left_operand, token, right_operand)
+            right = output_stack.pop()
+            left = output_stack.pop()
+            result = evaluate_binary_expression(left, token, right)
             output_stack.append(str(result))
         elif token in FUNCTIONS:
             operand = output_stack.pop()
             result = evaluate_function_expression(token, operand)
             output_stack.append(str(result))
         else:
-            print "Invalid token: " + token
-            exit(1)
+            return "Invalid token"
 
-    return output_stack
+    return output_stack.pop()
 
-
-def main():
-    expression1 = ["-1.5", "+", "+2", "-", "0.5"]
-    expression2 = ["-3", "+", "4", "*", "2", "/", "(", "1", "-", "5", ")", "^", "2", "^", "3"]
-    expression3 = ["sin", "20"]
-    expression4 = ["sin", "(", "3", "/", "3", "*", "3.1415", ")"]
-
-    expression1 = infix_to_postfix(expression1)
-    expression2 = infix_to_postfix(expression2)
-    expression3 = infix_to_postfix(expression3)
-    expression4 = infix_to_postfix(expression4)
-
-    print expression1, "\n", expression2, "\n", expression3, "\n", expression4
-
-    print evaluate_postfix(expression1)
-    print evaluate_postfix(expression2)
-    print evaluate_postfix(expression3)
-    print evaluate_postfix(expression4)
-
-if __name__ == "__main__":
-    main()
