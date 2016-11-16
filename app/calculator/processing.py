@@ -163,7 +163,6 @@ def get_xy_values(postfix_expression, domain):
                 new_expression.append(str(c))
             else:
                 new_expression.append(token)
-        print new_expression
         xy_values+=(str(c), evaluate_postfix(new_expression))
         hold = tuple(xy_values)
         new_xy.append(hold)
@@ -177,11 +176,11 @@ def get_xy_values(postfix_expression, domain):
                 new_expression.append(str(i))
             else:
                 new_expression.append(token)
-        print new_expression
         xy_values+=(str(i), evaluate_postfix(new_expression))
         hold = tuple(xy_values)
         new_xy.append(hold)
 
+    print new_xy
     return new_xy
 
 def string_to_num(string):
