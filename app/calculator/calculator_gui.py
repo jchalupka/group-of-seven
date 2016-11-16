@@ -2,7 +2,7 @@
 
 import Tkinter as tk
 import curve_drawer
-import expression_validator
+#import expression_validator
 from graph_axis import rangeIncre, rangeDecre
 
 
@@ -183,6 +183,7 @@ def create_widgets(root):
     three = tk.Button(root, text="3", highlightbackground="DarkOrange1",command=lambda:add_to_entry(root, "3"))
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
+    #Range up and down buttons, they call imported functions in graph_axis
     rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75", command=lambda: rangeIncre())
     rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75",command=lambda: rangeDecre())
 

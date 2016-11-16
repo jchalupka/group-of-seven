@@ -71,6 +71,38 @@ add_function("ln", lambda x: math.log1p(x))
 Min, Max = range(2)
 
 
+<<<<<<< HEAD
+def validate_domain(domain):
+    try:
+        min = int(domain[Min])
+        max = int(domain[Max])
+    except ValueError:
+        return "Invalid range"
+
+    if min >= max:
+        return "Invalid range"
+
+    return (min, max)
+
+
+def evaluate_expression(expression, domain):
+    # validated_expression = validate_expression(expression)
+    # if validated_expression in err.ERROR_MESSAGES:
+    #     return validated_expression
+    # else:
+        # postfix_expression = infix_to_postfix(validated_expression)
+        postfix_expression = infix_to_postfix(expression)
+        # maybe make expression validator change everything to lowercase
+        if "x" in postfix_expression:
+            validated_domain = validate_domain(domain)
+            if validated_domain in err.ERROR_MESSAGES:
+                return validated_domain
+
+
+
+
+=======
+>>>>>>> f2f93571f1552cd382185002c7b0755223b9ffae
 def maintain_precedence(operator_stack):
     return (ASSOCIATIVITY[token] == Left and
             PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
@@ -187,5 +219,8 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> f2f93571f1552cd382185002c7b0755223b9ffae
