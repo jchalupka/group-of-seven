@@ -34,7 +34,7 @@ def add_function(name, function):
 
 add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
-add_operator("*", Left, 3, lambda x, y: x + y)
+add_operator("*", Left, 3, lambda x, y: x * y)
 add_operator("/", Left, 3, lambda x, y: x / y)
 add_operator("^", Right, 4, lambda x, y: x ** y)
 
