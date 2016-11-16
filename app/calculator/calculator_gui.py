@@ -193,7 +193,7 @@ def create_widgets(root):
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
     negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_first(root, "-"))
     add = tk.Button(root, text="+", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "+"))
-    clear = tk.Button(root, text="C", highlightbackground="gray39", command=lambda:clear_entry(root))
+    clear = tk.Button(root, text="Clear", highlightbackground="gray39", command=lambda:clear_entry(root))
     go = tk.Button(root, text="=", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar))
 
     load = tk.Button(root, text="Load", highlightbackground="gray75", command=lambda:load_file(root, "Load"))
