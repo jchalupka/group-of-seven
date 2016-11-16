@@ -70,7 +70,7 @@ add_function("ln", lambda x: math.log1p(x))
 Min, Max = range(2)
 
 
-def validate_domain(domain): 
+def validate_domain(domain):
     try:
         min = int(domain[Min])
         max = int(domain[Max])
@@ -90,12 +90,11 @@ def evaluate_expression(expression, domain):
     # else:
         # postfix_expression = infix_to_postfix(validated_expression)
         postfix_expression = infix_to_postfix(expression)
-        # maybe make expression validator change everything to lowercase 
+        # maybe make expression validator change everything to lowercase
         if "x" in postfix_expression:
             validated_domain = validate_domain(domain)
             if validated_domain in err.ERROR_MESSAGES:
                 return validated_domain
-            else:
 
 
 
@@ -198,4 +197,3 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
-

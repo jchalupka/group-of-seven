@@ -7,7 +7,7 @@ import processing
 # CIS*3250
 
 # Validation of an arithmetic expression
-# This module takes an arithmatic expression as input and 
+# This module takes an arithmatic expression as input and
 #   returns if the expression is a valid arithmatic expression.
 
 #  Updated to now check for functions, and defined symbols
@@ -26,7 +26,7 @@ def gui_function_validator(expression, status_root):
         print 'I\'m going to call Shuntingyard'
         term_list = to_expression_list(expression)
         print term_list
-        
+
         result = processing.infix_to_postfix(term_list)
         print result
 
@@ -35,7 +35,7 @@ def gui_function_validator(expression, status_root):
 
 
         # Call Shuntingyard here
-  
+
     return answer
 
 
@@ -56,11 +56,11 @@ def result_message(valid_p, valid_a):
 def valid_parentheses(expression):
     stack = list()
     for x in expression:
-        if x is '(': stack.append(x) 
-        elif x is ')': 
-            if len(stack): stack.pop() 
+        if x is '(': stack.append(x)
+        elif x is ')':
+            if len(stack): stack.pop()
             else: return False
-    return True if len(stack) is 0 else False 
+    return True if len(stack) is 0 else False
 
 #
 # Returns a boolean representing if the arithmatic operators are valid
@@ -70,7 +70,7 @@ def valid_arithmetic_expression(expression):
 
     # Now we have an expression in list form seperated into individual componenets
     # eg ['29', '**', '(', '59', '+', '4', '-', '3', ')', '/', '6']
-    
+
     symbols = ['sin','cos','tan',
                'asin','acos','atan',
                'sinh','cosh','tanh',
@@ -98,8 +98,8 @@ def valid_arithmetic_expression(expression):
 
     # State 0 can accept number, letter or (
     # State 1 can accept operation or )
-    
-    state = 0 
+
+    state = 0
 
 
     if (len(stack) == 0):
@@ -109,9 +109,9 @@ def valid_arithmetic_expression(expression):
     # if (re.match('-*[xX]', stack[0]) and len(stack) == 1):
     #     return False
 
-    # Test is the function begins with y = just take it out 
-    if re.match('[yY]\s*=.*', ''.join(stack[0:2])):   
-        if (stack[1].split('=')[1] != ''): 
+    # Test is the function begins with y = just take it out
+    if re.match('[yY]\s*=.*', ''.join(stack[0:2])):
+        if (stack[1].split('=')[1] != ''):
             stack.insert(2,stack[1].split('=')[1])
         stack = stack[2:]
 
@@ -124,7 +124,7 @@ def valid_arithmetic_expression(expression):
 
             elif re.match('^\($', token):
                 state = 0
-            else: 
+            else:
                 return False
         elif state is 1:
             if '-' is token[0]:
@@ -136,11 +136,11 @@ def valid_arithmetic_expression(expression):
                 state = 0
             elif re.match('^\)$',token):
                 state = 1
-            else: 
+            else:
                 return False
 
     # At the end of validation state = 1 if valid
-    if state is 1: return True 
+    if state is 1: return True
     else: return False
 
 #
@@ -154,9 +154,9 @@ def to_expression_list(expression):
 
     expression = filter(None, expression)
 
-    # Test is the function begins with y = just take it out 
-    if re.match('[yY]\s*=.*', ''.join(expression[0:2])):   
-        if (expression[1].split('=')[1] != ''): 
+    # Test is the function begins with y = just take it out
+    if re.match('[yY]\s*=.*', ''.join(expression[0:2])):
+        if (expression[1].split('=')[1] != ''):
             expression.insert(2,expression[1].split('=')[1])
         expression = expression[2:]
     return expression
@@ -169,7 +169,7 @@ def found_valid():
     return "A valid arithmetic expression"
 
 def found_not_valid(reason):
-    return "An invalid arithmetic expression: " + reason() 
+    return "An invalid arithmetic expression: " + reason()
 
 def found_missing_parenthesis():
     return "mismatch parentheses"
@@ -194,7 +194,7 @@ def run_valid_tests():
     correct = 0
     print 'VALID TESTS'
     if test('4'): correct += 1
-    if test('1-2'): correct  += 1 
+    if test('1-2'): correct  += 1
     if test('2 * 2 + 3'): correct += 1
     if test('(2 * 2) + 3'): correct += 1
     if test('2/1 * (3 * -4)'): correct += 1
@@ -263,7 +263,7 @@ def main():
 
     #Invalid
     run_invalid_tests()
-    
+
 
 if __name__ == '__main__':
     main()
