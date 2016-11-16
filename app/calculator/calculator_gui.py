@@ -24,6 +24,10 @@ def add_to_entry(root, text):
     entry = root.focus_get()
     entry.insert(tk.END, text)
 
+def add_to_first(root, text):
+    entry = root.focus_get()
+    entry.insert(tk.ANCHOR, text)
+
 def clear_entry(root):
     entry = root.focus_get()
     entry.delete(0, tk.END)
@@ -148,7 +152,7 @@ def create_widgets(root):
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
-    negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
+    negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_first(root, "-"))
     add = tk.Button(root, text="+", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "+"))
     clear = tk.Button(root, text="C", highlightbackground="gray39", command=lambda:clear_entry(root))
     go = tk.Button(root, text="=", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar))
