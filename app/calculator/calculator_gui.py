@@ -87,6 +87,42 @@ def window_resize(canvas, e, line):
 
 def create_widgets(root):
 
+    def load_file(root, text):
+        fpt=open('input.txt', 'r')
+        dataFile=fpt.read()
+        myList=dataFile.split('\n')
+        entry1.delete(0, tk.END)
+        entry2.delete(0, tk.END)
+        entry3.delete(0, tk.END)
+        entry4.delete(0, tk.END)
+        entry5.delete(0, tk.END)
+        entry6.delete(0, tk.END)
+        entry7.delete(0, tk.END)
+
+        entry1.insert(0, myList[0])
+        entry2.insert(0, myList[1])
+        entry3.insert(0, myList[2])
+        entry4.insert(0, myList[3])
+        entry5.insert(0, myList[4])
+        entry6.insert(0, myList[5])
+        entry7.insert(0, myList[6])
+
+    def save_file(root, text):
+        data=open('output.txt', 'w')
+        data.write(entry1.get())
+        data.write("\n")
+        data.write(entry2.get())
+        data.write("\n")
+        data.write(entry3.get())
+        data.write("\n")
+        data.write(entry4.get())
+        data.write("\n")
+        data.write(entry5.get())
+        data.write("\n")
+        data.write(entry6.get())
+        data.write("\n")
+        data.write(entry7.get())
+
     status_bar = tk.Label(root, text="*", bd=1, relief=tk.SUNKEN, anchor=tk.W)
     entry1_label = tk.Label(root, text="1", width=6, bg="white smoke")
     entry2_label = tk.Label(root, text="2", width=6, bg="white smoke")
@@ -157,6 +193,9 @@ def create_widgets(root):
     clear = tk.Button(root, text="C", highlightbackground="gray39", command=lambda:clear_entry(root))
     go = tk.Button(root, text="=", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar))
 
+    load = tk.Button(root, text="Load", highlightbackground="gray75", command=lambda:load_file(root, "Load"))
+    save = tk.Button(root, text="Save", highlightbackground="gray75", command=lambda:save_file(root, "Save"))
+
     # fill grid
     entry1_label.grid(row=1, column=0, ipady=16, sticky=tk.N+tk.W+tk.E)
     entry2_label.grid(row=2, column=0, ipady=16, sticky=tk.N+tk.W+tk.E)
@@ -219,11 +258,14 @@ def create_widgets(root):
     decimal.grid(row=12, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     negative.grid(row=12, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     add.grid(row=12, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+
     rangeX.grid(row=10, column=11, ipadx=10, ipady=2)
     rangeY.grid(row=12, column=11,ipadx=10,ipady=2)
-    clear.grid(row=9, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
-    go.grid(row=11, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
 
+    clear.grid(row=9, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
+    load.grid(row=13, column=1, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
+    go.grid(row=11, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
+    save.grid(row=13, column=3, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
 
 
 
