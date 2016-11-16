@@ -99,8 +99,8 @@ def valid_arithmetic_expression(expression):
         return False
 
     # Check for corner case with one variable
-    if (re.match('-*[xX]', stack[0]) and len(stack) == 1):
-        return False
+    # if (re.match('-*[xX]', stack[0]) and len(stack) == 1):
+    #     return False
 
     # Test is the function begins with y = 
     if re.match('[yY]\s*=.*', ''.join(stack[0:2])):
