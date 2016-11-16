@@ -2,7 +2,7 @@
 
 import Tkinter as tk
 import curve_drawer
-#import expression_validator
+import expression_validator
 from graph_axis import rangeIncre, rangeDecre
 
 
