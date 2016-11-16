@@ -119,16 +119,41 @@ def infix_to_postfix(expression):
     return output_queue
 
 
-def get_xy_values(postfix_expression, range):
-    xy_values = []
+def get_xy_values(postfix_expression, domain):
+    new_expression = []
+    new_xy = []
 
-    for i in range(range):
+    #get negative (x,y)
+    for i in range(domain):
+        xy_values = []
+        hold = []
         for token in postfix_expression:
-            token.replace("x", i)
-        xy_values.add((i, evaluate_postfix(postfix_expression)))    
+            if token == "x":
+                c = domain - i
+                c = (c - c) - (domain - i)
+                new_expression.append(str(c))
+            else:
+                new_expression.append(token)
+        print new_expression
+        xy_values+=(str(c), evaluate_postfix(new_expression))
+        hold = tuple(xy_values)
+        new_xy.append(hold)
 
-    return xy_values
+    #get positive (x,y)
+    for i in range(domain):
+        xy_values = []
+        hold = []
+        for token in postfix_expression:
+            if token == "x":
+                new_expression.append(str(i))
+            else:
+                new_expression.append(token)
+        print new_expression
+        xy_values+=(str(i), evaluate_postfix(new_expression))
+        hold = tuple(xy_values)
+        new_xy.append(hold)
 
+    return new_xy
 
 def string_to_num(string):
     if string.find(".") != -1:
@@ -187,5 +212,7 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
+
+get_xy_values(["x","4","+"], 10)
 
 

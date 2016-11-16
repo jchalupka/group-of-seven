@@ -31,7 +31,7 @@ def gui_function_validator(expression, status_root):
         print result
 
         answer = processing.evaluate_postfix(result)
-        answer = answer[0]
+        #answer = answer[0]
 
 
         # Call Shuntingyard here
