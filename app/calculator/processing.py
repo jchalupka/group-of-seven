@@ -2,7 +2,6 @@
 
 from __future__ import division
 
-import error_messages as err
 import math
 import re
 
@@ -37,7 +36,9 @@ add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
 add_operator("*", Left, 3, lambda x, y: x * y)
 add_operator("/", Left, 3, lambda x, y: divide(x, y))
+add_operator("%", Left, 3, lambda x, y: x % y)
 add_operator("^", Right, 4, lambda x, y: x ** y)
+add_operator("!", Right, 5, lambda x: math.factorial(x))
 
 # Trigonometric functions
 add_function("sin", lambda x: math.sin(math.radians(x)))
@@ -70,6 +71,7 @@ add_function("ln", lambda x: math.log1p(x))
 Min, Max = range(2)
 
 
+<<<<<<< HEAD
 def validate_domain(domain):
     try:
         min = int(domain[Min])
@@ -99,6 +101,8 @@ def evaluate_expression(expression, domain):
 
 
 
+=======
+>>>>>>> f2f93571f1552cd382185002c7b0755223b9ffae
 def maintain_precedence(operator_stack):
     return (ASSOCIATIVITY[token] == Left and
             PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
@@ -147,6 +151,17 @@ def infix_to_postfix(expression):
     return output_queue
 
 
+def get_xy_values(postfix_expression, range):
+    xy_values = []
+
+    for i in range(range):
+        for token in postfix_expression:
+            token.replace("x", i)
+        xy_values.add((i, evaluate_postfix(postfix_expression)))    
+
+    return xy_values
+
+
 def string_to_num(string):
     if string.find(".") != -1:
         return float(string)
@@ -167,9 +182,12 @@ def evaluate_binary_expression(left_operand, operator, right_operand):
     return OPERATION[operator](left_operand, right_operand)
 
 
-def evaluate_function_expression(function_token, operand):
+def evaluate_unary_expression(function_token, operand):
     operand = string_to_num(operand)
-    return FUNCTION[function_token](operand)
+    if function_token in FUNCTIONS:
+        return FUNCTION[function_token](operand)
+    else:
+        return OPERATION[operator](operand)
 
 
 def evaluate_postfix(expression):
@@ -184,6 +202,10 @@ def evaluate_postfix(expression):
             output_stack.append(str(math.pi))
         elif token == "e":
             output_stack.append(str(math.e))
+        elif token == "!":
+            operand = output_stack.pop()
+            result = evaluate_unary_expression(token, operand)
+            output_stack.append(str(result))
         elif token in OPERATORS:
             right = output_stack.pop()
             left = output_stack.pop()
@@ -191,9 +213,14 @@ def evaluate_postfix(expression):
             output_stack.append(str(result))
         elif token in FUNCTIONS:
             operand = output_stack.pop()
-            result = evaluate_function_expression(token, operand)
+            result = evaluate_unary_expression(token, operand)
             output_stack.append(str(result))
         else:
             return "Invalid token"
 
     return output_stack.pop()
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> f2f93571f1552cd382185002c7b0755223b9ffae
