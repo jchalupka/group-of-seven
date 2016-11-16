@@ -86,14 +86,17 @@ def valid_arithmetic_expression(expression):
             loc = expression.index(token)
             if re.match('-*(pi|e)', token):
                 expression[loc] = '1'
-            elif expression[loc+1] is '(' and  re.match('-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+|-*x',expression[loc+2]) and expression[loc+3] is ')':
+           # elif expression[loc+1] is '(' and  re.match('-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+|-*x',expression[loc+2]) and expression[loc+3] is ')':
+            else:
                 if expression[loc][0] == '-':
+                    #expression[loc] = '-1 *'
                     expression[loc] = '-1'
                 else:
                     expression[loc] = '1'
-                expression.pop(loc+1)
-                expression.pop(loc+1)
-                expression.pop(loc+1)
+                expression.insert(loc+1, '*')
+                # expression.pop(loc+1)
+                # expression.pop(loc+1)
+                # expression.pop(loc+1)
 
     #print stack
 
@@ -118,6 +121,7 @@ def valid_arithmetic_expression(expression):
 
     while len(stack) > 0:
         token = stack.pop(0)
+        #print token
         if state is 0:
             if re.match('^-*x|-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+$',token):
                 state = 1
@@ -138,6 +142,7 @@ def valid_arithmetic_expression(expression):
                 state = 1
             else: 
                 return False
+
     # At the end of validation state = 1 if valid
     if state is 1: return True 
     else: return False
@@ -218,9 +223,10 @@ def run_valid_tests():
     if test('2 * -pi'): correct += 1
     if test('pi * pi'): correct += 1
     if test(' y = pi'): correct += 1
+    if test('sin(20 * 16 - 5)/2'): correct += 1
 
     print 'END OF VALID TESTS'
-    print correct,'/ 25 Correct.'
+    print correct,'/ 26 Correct.'
 
 def run_invalid_tests():
     correct = 0
