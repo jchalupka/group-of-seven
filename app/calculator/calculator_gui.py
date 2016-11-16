@@ -34,7 +34,7 @@ def get_answer(equation):
 def update_status(status_bar, response):
     status_bar.config(text=response)
 
-def execute_entry(root, status_bar, type):
+def execute_entry(root, status_bar):
     entry = root.focus_get()
     equation = entry.get()
     answer  = expression_validator.gui_function_validator(equation, status_bar)
@@ -111,16 +111,16 @@ def create_widgets(root):
 
     open_parens = tk.Button(root, text="(", highlightbackground="gray39", command=lambda:add_to_entry(root, "("))
     close_parens = tk.Button(root, text=")", highlightbackground="gray39", command=lambda:add_to_entry(root, ")"))
-    less_than = tk.Button(root, text="<", highlightbackground="gray39", command=lambda:add_to_entry(root, "<"))
-    greater_than = tk.Button(root, text=">", highlightbackground="gray39", command=lambda:add_to_entry(root, ">"))
+    ceil = tk.Button(root, text=u"\u2308\u2309", highlightbackground="gray39", command=lambda:add_to_entry(root, "ceil"))
+    floor = tk.Button(root, text=u"\u230A\u230B", highlightbackground="gray39", command=lambda:add_to_entry(root, "floor"))
 
     absolute = tk.Button(root, text="|a|", highlightbackground="gray39", command=lambda:add_to_entry(root, "abs"))
     pi = tk.Button(root, text=u"\u03C0", highlightbackground="gray39", command=lambda:add_to_entry(root, "pi"))
-    less_than_equal = tk.Button(root, text=u"\u2264", highlightbackground="gray39", command=lambda:add_to_entry(root, "<="))
-    greater_than_equal = tk.Button(root, text=u"\u2265", highlightbackground="gray39", command=lambda:add_to_entry(root, ">="))
+    log = tk.Button(root, text="log", highlightbackground="gray39", command=lambda:add_to_entry(root, "log"))
+    ln = tk.Button(root, text="ln", highlightbackground="gray39", command=lambda:add_to_entry(root, "ln"))
 
     square_root = tk.Button(root, text=u"\u221A", highlightbackground="gray39", command=lambda:add_to_entry(root, "sqrt"))
-    n_root = tk.Button(root, text=u"\u221A", highlightbackground="gray39", command=lambda:add_to_entry(root, "root"))
+    factorial = tk.Button(root, text="n!", highlightbackground="gray39", command=lambda:add_to_entry(root, "!"))
     remainder= tk.Button(root, text=u"\uFE6A", highlightbackground="gray39", command=lambda:add_to_entry(root, "%"))
     e = tk.Button(root, text="e", highlightbackground="gray39", command=lambda:add_to_entry(root, "e"))
 
@@ -150,8 +150,8 @@ def create_widgets(root):
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
     negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
     add = tk.Button(root, text="+", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "+"))
-    graph = tk.Button(root, text="Graph", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar, "Graph"))
-    go = tk.Button(root, text="=", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar, "Calculation"))
+    clear = tk.Button(root, text="C", highlightbackground="gray39", command=lambda:clear_entry(root))
+    go = tk.Button(root, text="=", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar))
 
     # fill grid
     entry1_label.grid(row=1, column=0, ipady=16, sticky=tk.N+tk.W+tk.E)
@@ -183,16 +183,16 @@ def create_widgets(root):
 
     open_parens.grid(row=10, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     close_parens.grid(row=10, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    less_than.grid(row=10, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    greater_than.grid(row=10, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+    ceil.grid(row=10, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+    floor.grid(row=10, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
 
     absolute.grid(row=11, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     pi.grid(row=11, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    less_than_equal.grid(row=11, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    greater_than_equal.grid(row=11, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+    log.grid(row=11, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+    ln.grid(row=11, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
 
     square_root.grid(row=12, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    n_root.grid(row=12, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+    factorial.grid(row=12, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     remainder.grid(row=12, column=3, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     e.grid(row=12, column=4, ipadx=15, ipady=5, sticky=tk.W+tk.E)
 
@@ -217,7 +217,7 @@ def create_widgets(root):
     add.grid(row=12, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     rangeX.grid(row=10, column=11, ipadx=10, ipady=2)
     rangeY.grid(row=12, column=11,ipadx=10,ipady=2)
-    graph.grid(row=9, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
+    clear.grid(row=9, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
     go.grid(row=11, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
 
 
