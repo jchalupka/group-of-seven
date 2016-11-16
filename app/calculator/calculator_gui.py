@@ -13,6 +13,24 @@ behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
+global rangeVal
+rangeVal = 4
+
+def rangeIncre():
+    global rangeVal
+    temp = rangeVal
+    temp = temp*2
+    if(temp<9223372036854775807):
+        rangeVal = temp
+    print "Range: " + str(rangeVal)
+
+def rangeDecre():
+    global rangeVal
+    temp = rangeVal
+    temp = temp/2
+    if(temp>0):
+        rangeVal = temp
+    print "Range: " + str(rangeVal)
 # sets column width and allows for window resizing
 def configure_grid(root):
     for column in range(MAX_COLS):
@@ -179,15 +197,8 @@ def create_widgets(root):
     three = tk.Button(root, text="3", highlightbackground="DarkOrange1",command=lambda:add_to_entry(root, "3"))
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
-    varX = tk.StringVar()
-    varX.set("1")
-    rangeX = tk.OptionMenu(root, varX, "1","2","3","4","5","6","7","8","9","10")
-    rangeX.config(bg = "gray75")
-
-    varY = tk.StringVar()
-    varY.set("1")
-    rangeY = tk.OptionMenu(root, varY, "1","2","3","4","5","6","7","8","9","10")
-    rangeY.config(bg = "gray75")
+    rangeUp = tk.Button(root,text=u"\u2191 ", command=lambda: rangeIncre())
+    rangeDown = tk.Button(root,text=u"\u2193", command=lambda: rangeDecre())
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
@@ -262,8 +273,10 @@ def create_widgets(root):
     negative.grid(row=12, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     add.grid(row=12, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
 
-    rangeX.grid(row=10, column=11, ipadx=10, ipady=2)
-    rangeY.grid(row=12, column=11,ipadx=10,ipady=2)
+    #buttons and lables for ranges
+    rangeUp.grid(row=10, column=11, ipadx=8, ipady=2,sticky=tk.W+tk.E)
+    rangeDown.grid(row=11,column=11,ipadx=8, ipady=2,sticky=tk.W+tk.E)
+    tk.Label(root, text="Range", bg = "grey75").grid(row=9,column=10, sticky=tk.W+tk.E)
 
     clear.grid(row=9, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
     load.grid(row=13, column=1, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
