@@ -48,6 +48,7 @@ def execute_entry(root, status_bar):
     if answer is not None:
         add_to_entry(root, " = ")
         add_to_entry(root, answer)
+      
 
 def draw_grid_lines(canvas, w, h, step_x, step_y):
     i = 0
