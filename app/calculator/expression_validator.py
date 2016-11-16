@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import re
 import calculator_gui
+import processing
+
 # Jordan Chalupka
 # CIS*3250
 
@@ -17,7 +19,9 @@ def gui_function_validator(expression, status_root):
     if not (valid_p and valid_a):
         calculator_gui.update_status(status_root, result_message(valid_p, valid_a))
     else:
-        print 'I\'m going to call Shuntingyard, or should you?'
+        print 'I\'m going to call Shuntingyard'
+        result = processing.infix_to_postfix(expression)
+
         # Call Shuntingyard here
   
     return valid_p and valid_a
@@ -59,6 +63,8 @@ def valid_arithmetic_expression(expression):
 
     expression = filter(None, expression)
 
+    # Save the original
+    orig_expression = expression
 
     # Now we have an expression in list form seperated into individual componenets
     # eg ['29', '**', '(', '59', '+', '4', '-', '3', ')', '/', '6']
@@ -219,11 +225,10 @@ def run_invalid_tests():
     if not test('y = y + 2'): correct += 1
     if not test(''): correct += 1
     if not test('y'): correct += 1
-    if not test('x'): correct += 1
     if not test('s'): correct += 1
     if not test('helloWorld'): correct += 1
     print 'END OF INVALID TESTS'
-    print correct,'/ 23 Correct.'
+    print correct,'/ 22 Correct.'
 # End of tests
 
 def main():
