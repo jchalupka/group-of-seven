@@ -71,7 +71,6 @@ add_function("ln", lambda x: math.log1p(x))
 Min, Max = range(2)
 
 
-<<<<<<< HEAD
 def validate_domain(domain):
     try:
         min = int(domain[Min])
@@ -101,8 +100,6 @@ def evaluate_expression(expression, domain):
 
 
 
-=======
->>>>>>> f2f93571f1552cd382185002c7b0755223b9ffae
 def maintain_precedence(operator_stack):
     return (ASSOCIATIVITY[token] == Left and
             PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
@@ -219,8 +216,4 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
-<<<<<<< HEAD
-=======
 
-
->>>>>>> f2f93571f1552cd382185002c7b0755223b9ffae
