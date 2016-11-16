@@ -89,14 +89,10 @@ def valid_arithmetic_expression(expression):
            # elif expression[loc+1] is '(' and  re.match('-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+|-*x',expression[loc+2]) and expression[loc+3] is ')':
             else:
                 if expression[loc][0] == '-':
-                    #expression[loc] = '-1 *'
                     expression[loc] = '-1'
                 else:
                     expression[loc] = '1'
                 expression.insert(loc+1, '*')
-                # expression.pop(loc+1)
-                # expression.pop(loc+1)
-                # expression.pop(loc+1)
 
     #print stack
 
@@ -136,7 +132,7 @@ def valid_arithmetic_expression(expression):
                     stack.insert(0, token[1:])
                 token = '-'
 
-            if re.match('^[\+\-\/\*]$',token):
+            if re.match('^[\+\-\/\*\^]$',token):
                 state = 0
             elif re.match('^\)$',token):
                 state = 1
@@ -224,9 +220,11 @@ def run_valid_tests():
     if test('pi * pi'): correct += 1
     if test(' y = pi'): correct += 1
     if test('sin(20 * 16 - 5)/2'): correct += 1
+    if test('sin(20^5)'): correct += 1
+    if test('sin(cos(tan 50))'): correct += 1
 
     print 'END OF VALID TESTS'
-    print correct,'/ 26 Correct.'
+    print correct,'/ 28 Correct.'
 
 def run_invalid_tests():
     correct = 0
