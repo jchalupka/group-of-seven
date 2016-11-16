@@ -31,7 +31,7 @@ def gui_function_validator(expression, status_root):
         print result
 
         answer = processing.evaluate_postfix(result)
-        answer = answer[0]
+        answer = answer
 
 
         # Call Shuntingyard here
@@ -84,7 +84,11 @@ def valid_arithmetic_expression(expression):
     for token in expression:
         if token in symbols:
             loc = expression.index(token)
-            if re.match('-*(pi|e)', token):
+            if token == '!':
+                expression[loc] = '*'
+                expression.insert(loc+1, '1')
+            
+            elif re.match('-*(pi|e)', token):
                 expression[loc] = '1'
            # elif expression[loc+1] is '(' and  re.match('-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+|-*x',expression[loc+2]) and expression[loc+3] is ')':
             else:
@@ -222,9 +226,10 @@ def run_valid_tests():
     if test('sin(20 * 16 - 5)/2'): correct += 1
     if test('sin(20^5)'): correct += 1
     if test('sin(cos(tan 50))'): correct += 1
+    if test('5!'): correct += 1
 
     print 'END OF VALID TESTS'
-    print correct,'/ 28 Correct.'
+    print correct,'/ 29 Correct.'
 
 def run_invalid_tests():
     correct = 0
