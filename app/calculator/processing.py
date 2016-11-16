@@ -36,7 +36,9 @@ add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
 add_operator("*", Left, 3, lambda x, y: x * y)
 add_operator("/", Left, 3, lambda x, y: divide(x, y))
+add_operator("%", Left, 3, lambda x, y: x % y)
 add_operator("^", Right, 4, lambda x, y: x ** y)
+add_operator("!", Right, 5, lambda x: math.factorial(x))
 
 # Trigonometric functions
 add_function("sin", lambda x: math.sin(math.radians(x)))
@@ -67,17 +69,6 @@ add_function("ln", lambda x: math.log1p(x))
 
 
 Min, Max = range(2)
-
-
-# def evaluate_expression(expression, range):
-#     validated_expression = validate_expression(expression)
-#     if validated_expression in err.ERROR_MESSAGES:
-#         return validated_expression
-#     else:
-#         postfix_expression = infix_to_postfix(validated_expression)
-#         if "x" in postfix_expression:
-#             xy_values = get_xy_values(expression, range)
-#             # draw_graph(xy_values)
 
 
 def maintain_precedence(operator_stack):
@@ -159,9 +150,12 @@ def evaluate_binary_expression(left_operand, operator, right_operand):
     return OPERATION[operator](left_operand, right_operand)
 
 
-def evaluate_function_expression(function_token, operand):
+def evaluate_unary_expression(function_token, operand):
     operand = string_to_num(operand)
-    return FUNCTION[function_token](operand)
+    if function_token in FUNCTIONS:
+        return FUNCTION[function_token](operand)
+    else:
+        return OPERATION[operator](operand)
 
 
 def evaluate_postfix(expression):
@@ -176,6 +170,10 @@ def evaluate_postfix(expression):
             output_stack.append(str(math.pi))
         elif token == "e":
             output_stack.append(str(math.e))
+        elif token == "!":
+            operand = output_stack.pop()
+            result = evaluate_unary_expression(token, operand)
+            output_stack.append(str(result))
         elif token in OPERATORS:
             right = output_stack.pop()
             left = output_stack.pop()
@@ -183,10 +181,11 @@ def evaluate_postfix(expression):
             output_stack.append(str(result))
         elif token in FUNCTIONS:
             operand = output_stack.pop()
-            result = evaluate_function_expression(token, operand)
+            result = evaluate_unary_expression(token, operand)
             output_stack.append(str(result))
         else:
             return "Invalid token"
 
     return output_stack.pop()
+
 
