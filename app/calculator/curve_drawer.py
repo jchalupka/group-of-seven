@@ -58,4 +58,3 @@ def generate_line(function):
 def generate_function():
     function = lambda x: (x[0], math.sin(x[0]*2))
     return function
-

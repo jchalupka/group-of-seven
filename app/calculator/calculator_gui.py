@@ -48,6 +48,7 @@ def execute_entry(root, status_bar):
     if answer is not None:
         add_to_entry(root, " = ")
         add_to_entry(root, answer)
+      
 
 def draw_grid_lines(canvas, w, h, step_x, step_y):
     i = 0
@@ -182,6 +183,7 @@ def create_widgets(root):
     three = tk.Button(root, text="3", highlightbackground="DarkOrange1",command=lambda:add_to_entry(root, "3"))
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
+    #Range up and down buttons, they call imported functions in graph_axis
     rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75", command=lambda: rangeIncre())
     rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75",command=lambda: rangeDecre())
 
