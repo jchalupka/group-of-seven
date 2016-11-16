@@ -3,6 +3,8 @@
 import Tkinter as tk
 import curve_drawer
 import expression_validator
+from graph_axis import rangeIncre, rangeDecre
+
 
 MIN_SIZE_PIXELS = 55
 MAX_ROWS = 11
@@ -13,24 +15,7 @@ behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
-global rangeVal
-rangeVal = 4
 
-def rangeIncre():
-    global rangeVal
-    temp = rangeVal
-    temp = temp*2
-    if(temp<9223372036854775807):
-        rangeVal = temp
-    print "Range: " + str(rangeVal)
-
-def rangeDecre():
-    global rangeVal
-    temp = rangeVal
-    temp = temp/2
-    if(temp>0):
-        rangeVal = temp
-    print "Range: " + str(rangeVal)
 # sets column width and allows for window resizing
 def configure_grid(root):
     for column in range(MAX_COLS):
@@ -197,8 +182,8 @@ def create_widgets(root):
     three = tk.Button(root, text="3", highlightbackground="DarkOrange1",command=lambda:add_to_entry(root, "3"))
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
-    rangeUp = tk.Button(root,text=u"\u2191 ", command=lambda: rangeIncre())
-    rangeDown = tk.Button(root,text=u"\u2193", command=lambda: rangeDecre())
+    rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75", command=lambda: rangeIncre())
+    rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75",command=lambda: rangeDecre())
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))

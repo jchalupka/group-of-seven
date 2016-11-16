@@ -76,7 +76,7 @@ def valid_arithmetic_expression(expression):
                'sinh','cosh','tanh',
                'asinh','acosh','atanh',
                'ceil','floor','abs','sqrt','log','ln',
-               'pi', 'e']
+               'pi', 'e', '!']
     symbols += ['-' + symbol for symbol in symbols]
 
     stack = expression;
