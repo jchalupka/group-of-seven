@@ -16,15 +16,27 @@ def gui_function_validator(expression, status_root):
     valid_p = valid_parentheses(expression)
     valid_a = valid_arithmetic_expression(expression)
 
+    answer = None
+
     if not (valid_p and valid_a):
         calculator_gui.update_status(status_root, result_message(valid_p, valid_a))
+        return None
     else:
+        calculator_gui.update_status(status_root, '')
         print 'I\'m going to call Shuntingyard'
-        result = processing.infix_to_postfix(expression)
+        term_list = to_expression_list(expression)
+        print term_list
+        
+        result = processing.infix_to_postfix(term_list)
+        print result
+
+        answer = processing.evaluate_postfix(result)
+        answer = answer[0]
+
 
         # Call Shuntingyard here
   
-    return valid_p and valid_a
+    return answer
 
 
 def result_message(valid_p, valid_a):
@@ -54,17 +66,7 @@ def valid_parentheses(expression):
 # Returns a boolean representing if the arithmatic operators are valid
 #
 def valid_arithmetic_expression(expression):
-
-
-    #expression = expression.replace('-','+ -1 *')
-    expression = expression.lower()
-    expression = expression.replace(' ','')
-    expression = re.compile(r'(-*[a-z]+)|(-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+)|([\+\-\/\*\(\)])').split(expression)
-
-    expression = filter(None, expression)
-
-    # Save the original
-    orig_expression = expression
+    expression = to_expression_list(expression)
 
     # Now we have an expression in list form seperated into individual componenets
     # eg ['29', '**', '(', '59', '+', '4', '-', '3', ')', '/', '6']
@@ -108,9 +110,8 @@ def valid_arithmetic_expression(expression):
     # if (re.match('-*[xX]', stack[0]) and len(stack) == 1):
     #     return False
 
-    # Test is the function begins with y = 
-    if re.match('[yY]\s*=.*', ''.join(stack[0:2])):
-        
+    # Test is the function begins with y = just take it out 
+    if re.match('[yY]\s*=.*', ''.join(stack[0:2])):   
         if (stack[1].split('=')[1] != ''): 
             stack.insert(2,stack[1].split('=')[1])
         stack = stack[2:]
@@ -140,6 +141,26 @@ def valid_arithmetic_expression(expression):
     # At the end of validation state = 1 if valid
     if state is 1: return True 
     else: return False
+
+#
+# Change to list
+#
+def to_expression_list(expression):
+    #expression = expression.replace('-','+ -1 *')
+    expression = expression.lower()
+    expression = expression.replace(' ','')
+    expression = re.compile(r'(-*[a-z]+)|(-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+)|([\+\-\/\*\(\)])').split(expression)
+
+    expression = filter(None, expression)
+
+    # Test is the function begins with y = just take it out 
+    if re.match('[yY]\s*=.*', ''.join(expression[0:2])):   
+        if (expression[1].split('=')[1] != ''): 
+            expression.insert(2,expression[1].split('=')[1])
+        expression = expression[2:]
+    return expression
+
+
 #
 # Start of responses
 #
