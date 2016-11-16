@@ -2,7 +2,6 @@
 
 from __future__ import division
 
-import error_messages as err
 import math
 import re
 
@@ -70,34 +69,15 @@ add_function("ln", lambda x: math.log1p(x))
 Min, Max = range(2)
 
 
-def validate_domain(domain): 
-    try:
-        min = int(domain[Min])
-        max = int(domain[Max])
-    except ValueError:
-        return "Invalid range"
-
-    if min >= max:
-        return "Invalid range"
-
-    return (min, max)
-
-
-def evaluate_expression(expression, domain):
-    # validated_expression = validate_expression(expression)
-    # if validated_expression in err.ERROR_MESSAGES:
-    #     return validated_expression
-    # else:
-        # postfix_expression = infix_to_postfix(validated_expression)
-        postfix_expression = infix_to_postfix(expression)
-        # maybe make expression validator change everything to lowercase 
-        if "x" in postfix_expression:
-            validated_domain = validate_domain(domain)
-            if validated_domain in err.ERROR_MESSAGES:
-                return validated_domain
-            else:
-
-
+# def evaluate_expression(expression, range):
+#     validated_expression = validate_expression(expression)
+#     if validated_expression in err.ERROR_MESSAGES:
+#         return validated_expression
+#     else:
+#         postfix_expression = infix_to_postfix(validated_expression)
+#         if "x" in postfix_expression:
+#             xy_values = get_xy_values(expression, range)
+#             # draw_graph(xy_values)
 
 
 def maintain_precedence(operator_stack):
@@ -146,6 +126,17 @@ def infix_to_postfix(expression):
             output_queue.append(operator)
 
     return output_queue
+
+
+def get_xy_values(postfix_expression, range):
+    xy_values = []
+
+    for i in range(range):
+        for token in postfix_expression:
+            token.replace("x", i)
+        xy_values.add((i, evaluate_postfix(postfix_expression)))    
+
+    return xy_values
 
 
 def string_to_num(string):
