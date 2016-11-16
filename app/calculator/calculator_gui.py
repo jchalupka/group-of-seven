@@ -182,9 +182,12 @@ def create_widgets(root):
     varX = tk.StringVar()
     varX.set("1")
     rangeX = tk.OptionMenu(root, varX, "1","2","3","4","5","6","7","8","9","10")
+    rangeX.config(bg = "gray75")
+
     varY = tk.StringVar()
     varY.set("1")
     rangeY = tk.OptionMenu(root, varY, "1","2","3","4","5","6","7","8","9","10")
+    rangeY.config(bg = "gray75")
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
