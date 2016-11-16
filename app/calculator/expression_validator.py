@@ -1,198 +1,241 @@
-#!/usr/bin/env python
-
+#!/usr/bin/python
 import re
 import calculator_gui
-
 # Jordan Chalupka
 # CIS*3250
 
 # Validation of an arithmetic expression
-# This module takes an arithmatic expression as input and
-#	returns if the expression is a valid arithmatic expression.
+# This module takes an arithmatic expression as input and 
+#   returns if the expression is a valid arithmatic expression.
 
-# Things to check:
-#   -missing parenthesis eg. 2 + (5 - 7
-#   -missing arithmetic operators/operands eg. 99 * 42 */3
+#  Updated to now check for functions, and defined symbols
 
-#
-# Returns a boolean value representing the validity of the expression
-# Prints out a message as a side effect
-#
-def is_valid(expression, status_root, type):
-    response = found_valid(type)
-    if type == "Calculation":
-        valid_a = valid_arithmetic_expression(expression)
-        if not valid_a:
-        	    response = found_not_valid(found_missing_arithmetic_expression)
-    elif type == "Graph":
-        valid_a = valid_graphing_expression(expression)
-        if not valid_a:
-    	    response = found_not_valid(found_missing_graphing_expression)
+def gui_function_validator(expression, status_root):
     valid_p = valid_parentheses(expression)
-    if not valid_p:
-    	 response = found_not_valid(found_missing_parenthesis)
-    calculator_gui.update_status(status_root, response)
-    #print "paratheses: " + str(valid_p)
-    #print "cal: " + str(valid_a)
+    valid_a = valid_arithmetic_expression(expression)
+
+    if not (valid_p and valid_a):
+        calculator_gui.update_status(status_root, result_message(valid_p, valid_a))
+    else:
+        print 'I\'m going to call Shuntingyard, or should you?'
+        # Call Shuntingyard here
+  
     return valid_p and valid_a
+
+
+def result_message(valid_p, valid_a):
+        if not (valid_p and valid_a):
+            if not valid_p:
+                return 'An invalid arithmetic expression:  mismatch parentheses'
+            else:
+                return 'An invalid arithmetic expression:  missing arithmetic operators/operands'
+
+        else:
+            return 'A valid arithmetic expression'
+
 
 #
 # Returns a boolean represening if the parenthesis are valid
 #
 def valid_parentheses(expression):
     stack = list()
-    print expression
     for x in expression:
-        if x is '(':
-            stack.append(x)
-        elif x is ')':
-            if len(stack): stack.pop()
+        if x is '(': stack.append(x) 
+        elif x is ')': 
+            if len(stack): stack.pop() 
             else: return False
-    return True if len(stack) is 0 else False
-
-#
-# Returns the expression spereated into individual components as a list
-#
-def seperate(expression):
-	expression = expression.replace('-','+ -1 *')
-	expression = expression.replace(' ','')
-	expression = re.compile(r'(-*[A-Za-z]|-*\d+)|([\+\-\/\*\(\)\^])').split(expression)
-	expression = filter(None, expression)
-	return expression
+    return True if len(stack) is 0 else False 
 
 #
 # Returns a boolean representing if the arithmatic operators are valid
 #
 def valid_arithmetic_expression(expression):
-    stack = seperate(expression)
-	# State 0 can accept number, letter or (
-	# State 1 can accept operation or )
-    state = 0
-    while len(stack) > 0:
-        token = stack.pop(0)
-        if state is 0:
-			if re.match('^-*[A-Za-z]|-*\d+$',token):
-				state = 1
 
-			elif re.match('^\($', token):
-				state = 0
-			else:
-				return False
-        elif state is 1:
-			if re.match('^[\+\-\/\*\^]$',token):
-				state = 0
-			elif re.match('^\)$',token):
-				state = 1
-			else:
-				return False
-	# At the end of validation state = 1 if valid
-    if state is 1: return True
-    else: return False
 
-def valid_graphing_expression(expression):
-    stack = seperate(expression)
+    #expression = expression.replace('-','+ -1 *')
+    expression = expression.lower()
+    expression = expression.replace(' ','')
+    expression = re.compile(r'(-*[a-z]+)|(-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+)|([\+\-\/\*\(\)])').split(expression)
+
+    expression = filter(None, expression)
+
+
+    # Now we have an expression in list form seperated into individual componenets
+    # eg ['29', '**', '(', '59', '+', '4', '-', '3', ')', '/', '6']
+    
+    symbols = ['sin','cos','tan',
+               'asin','acos','atan',
+               'sinh','cosh','tanh',
+               'asinh','acosh','atanh',
+               'ceil','floor','abs','sqrt','log','ln',
+               'pi', 'e']
+    symbols += ['-' + symbol for symbol in symbols]
+
+    stack = expression;
+    #print stack
+    for token in expression:
+        if token in symbols:
+            loc = expression.index(token)
+            if re.match('-*(pi|e)', token):
+                expression[loc] = '1'
+            elif expression[loc+1] is '(' and  re.match('-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+|-*x',expression[loc+2]) and expression[loc+3] is ')':
+                if expression[loc][0] == '-':
+                    expression[loc] = '-1'
+                else:
+                    expression[loc] = '1'
+                expression.pop(loc+1)
+                expression.pop(loc+1)
+                expression.pop(loc+1)
+
+    #print stack
+
     # State 0 can accept number, letter or (
     # State 1 can accept operation or )
-    state = 0
-    x = 0
+    
+    state = 0 
+
+
+    if (len(stack) == 0):
+        return False
+
+    # Check for corner case with one variable
+    if (re.match('-*[xX]', stack[0]) and len(stack) == 1):
+        return False
+
+    # Test is the function begins with y = 
+    if re.match('[yY]\s*=.*', ''.join(stack[0:2])):
+        
+        if (stack[1].split('=')[1] != ''): 
+            stack.insert(2,stack[1].split('=')[1])
+        stack = stack[2:]
+
     while len(stack) > 0:
         token = stack.pop(0)
-
         if state is 0:
-            if re.match('^-*[xX]|-*\d+$',token):
+            if re.match('^-*x|-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+$',token):
                 state = 1
-                if token == "x":
-                    x += 1
+
             elif re.match('^\($', token):
                 state = 0
-            else:
+            else: 
                 return False
         elif state is 1:
-            if re.match('^[\+\-\/\*\^]$',token):
+            if '-' is token[0]:
+                if token[1:] is not '':
+                    stack.insert(0, token[1:])
+                token = '-'
+
+            if re.match('^[\+\-\/\*]$',token):
                 state = 0
             elif re.match('^\)$',token):
                 state = 1
-            else:
+            else: 
                 return False
     # At the end of validation state = 1 if valid
-    if state is 1 | x != 0: return True
+    if state is 1: return True 
     else: return False
-
 #
 # Start of responses
 #
-def found_valid(type):
-	return "*" + type + " successfully processed"
-
-def valid_graph(expression):
-    return "*Now graphing: " + expression
-
-def Invalid_graph(reason):
-    return "*Invalid graphical expression: " + reason()
+def found_valid():
+    return "A valid arithmetic expression"
 
 def found_not_valid(reason):
-	return "*An invalid arithmetic expression: " + reason()
+    return "An invalid arithmetic expression: " + reason() 
 
 def found_missing_parenthesis():
-	return "*Mismatch parentheses"
+    return "mismatch parentheses"
 
 def found_missing_arithmetic_expression():
-	return "*Missing arithmetic operators/operands"
-
-def found_missing_graphing_expression():
-    return "*Missing variable x or arithmetic operators/operands"
+    return "missing arithmetic operators/operands"
 # End of responses
 
 #
 # Some tests
 #
-def test(expression, status_root, type):
-	#print expression
-	valid = is_valid(expression, status_root, type)
-	#if valid: print 'Valid'
-	#else: print 'Invalid'
-	return valid
+def test(expression):
+    valid_p = valid_parentheses(expression)
+    valid_a = valid_arithmetic_expression(expression)
+    if valid_p and valid_a: print 'Valid'
+    else: print 'Invalid'
+
+    #print result_message(valid_p,valid_a)
+    return valid_p and valid_a
 
 def run_valid_tests():
-	correct = 0
-	print 'VALID TESTS'
-	if test('a+b'): correct += 1
-	if test('1-2'): correct  += 1
-	if test('x/2'): correct  += 1
-	if test('(a/3 + c)'): correct  += 1
-	if test('(  (a + 4) * 2 - 3  )'): correct  += 1
-	if test('(x-z)/(2+60*n)-( q*100)'): correct  += 1
-	print 'END OF VALID TESTS'
-	print correct,'/ 6 Correct.'
+    correct = 0
+    print 'VALID TESTS'
+    if test('4'): correct += 1
+    if test('1-2'): correct  += 1 
+    if test('2 * 2 + 3'): correct += 1
+    if test('(2 * 2) + 3'): correct += 1
+    if test('2/1 * (3 * -4)'): correct += 1
+    if test('x + x'): correct += 1
+    if test('y = x+x'): correct += 1
+    if test('y = x/2'): correct  += 1
+    if test('y = (x/3 + x)'): correct  += 1
+    if test('y = (  (x + 4) * 2 - 3  )'): correct  += 1
+    if test('y = (x-x)/(2+60*x)-( x*100)'): correct  += 1
+    if test('y = sin(x)'): correct += 1
+    if test('sin(x)'): correct += 1
+    if test('tan(x)'): correct += 1
+    if test('y = 2 * (sin(x) + 2/5) - tan(7000)'): correct += 1
+    if test('2.5 * 9.001'): correct += 1
+
+    if test('y=x'): correct += 1
+    if test('y=1'): correct += 1
+    if test('y = 2+2'): correct +=1
+    if test('y = 2+ x'): correct +=1
+    if test('pi'): correct += 1
+    if test('y = pi'): correct += 1
+    if test('2 * -pi'): correct += 1
+    if test('pi * pi'): correct += 1
+    if test(' y = pi'): correct += 1
+
+    print 'END OF VALID TESTS'
+    print correct,'/ 25 Correct.'
 
 def run_invalid_tests():
-	correct = 0
-	print 'INVALID TESTS'
-	if not test('20x'): correct += 1
-	if not test('4 y'): correct += 1
-	if not test('x+ '): correct += 1
-	if not test('+123'): correct += 1
-	if not test('( x + y'): correct += 1
-	if not test('(m + n'): correct += 1
-	if not test('xy)'): correct += 1
-	if not test('(y 10)'): correct += 1
-	if not test('(x - 61) - (2-400))'): correct += 1
-	if not test('(a-b/(x*y)'): correct += 1
-	if not test('(a+b)/((c-100)20'): correct += 1
-	if not test('(i- j)(t+k )'): correct += 1
-	print 'END OF INVALID TESTS'
-	print correct,'/ 12 Correct.'
+    correct = 0
+    print 'INVALID TESTS'
+    if not test('y = helloWorld'): correct += 1
+    if not test('20x'): correct += 1
+    if not test('4 y'): correct += 1
+    if not test('x+ '): correct += 1
+    if not test('+123'): correct += 1
+    if not test('( x + y'): correct += 1
+    if not test('(m + n'): correct += 1
+    if not test('xy)'): correct += 1
+    if not test('(y 10)'): correct += 1
+    if not test('(x - 61) - (2-400))'): correct += 1
+    if not test('(a-b/(x*y)'): correct += 1
+    if not test('(a+b)/((c-100)20'): correct += 1
+    if not test('(i- j)(t+k )'): correct += 1
+
+    if not test('y='): correct += 1
+    if not test('y=y'): correct += 1
+    if not test('a+1'): correct += 1
+    if not test('y = a + b'): correct += 1
+    if not test('y = y + 2'): correct += 1
+    if not test(''): correct += 1
+    if not test('y'): correct += 1
+    if not test('x'): correct += 1
+    if not test('s'): correct += 1
+    if not test('helloWorld'): correct += 1
+    print 'END OF INVALID TESTS'
+    print correct,'/ 23 Correct.'
 # End of tests
 
 def main():
-	# Test cases
-	# Valid
-	run_valid_tests()
+    # Test cases
+    # Valid
+    run_valid_tests()
 
-	#Invalid
-	run_invalid_tests()
+    #Invalid
+    run_invalid_tests()
+    
 
 if __name__ == '__main__':
-	main()
+    main()
 
 #EOF

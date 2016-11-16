@@ -37,12 +37,10 @@ def update_status(status_bar, response):
 def execute_entry(root, status_bar, type):
     entry = root.focus_get()
     equation = entry.get()
-    if expression_validator.test(equation, status_bar, type):
-        #Testing
-        expression = expression_validator.seperate(equation)
-        answer = get_answer(equation)
-        add_to_entry(root, "=")
-        add_to_entry(root, answer)
+    expression_validator.gui_function_validator(equation, status_bar)
+        #answer = get_answer(equation)
+        #add_to_entry(root, "=")
+        #add_to_entry(root, answer)
 
 def draw_grid_lines(canvas, w, h, step_x, step_y):
     i = 0
