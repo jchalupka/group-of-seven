@@ -168,7 +168,7 @@ def get_xy_values(postfix_expression, domain):
         new_xy.append(hold)
 
     #get positive (x,y)
-    for i in range(domain):
+    for i in range(domain+1):
         xy_values = []
         hold = []
         for token in postfix_expression:
@@ -240,3 +240,5 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
+
+get_xy_values(["x", "4", "+"], 10)
