@@ -3,6 +3,8 @@
 import Tkinter as tk
 import curve_drawer
 import expression_validator
+from graph_axis import rangeIncre, rangeDecre
+
 
 MIN_SIZE_PIXELS = 55
 MAX_ROWS = 11
@@ -13,24 +15,7 @@ behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
-global rangeVal
-rangeVal = 4
 
-def rangeIncre():
-    global rangeVal
-    temp = rangeVal
-    temp = temp*2
-    if(temp<9223372036854775807):
-        rangeVal = temp
-    print "Range: " + str(rangeVal)
-
-def rangeDecre():
-    global rangeVal
-    temp = rangeVal
-    temp = temp/2
-    if(temp>0):
-        rangeVal = temp
-    print "Range: " + str(rangeVal)
 # sets column width and allows for window resizing
 def configure_grid(root):
     for column in range(MAX_COLS):

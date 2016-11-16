@@ -2,25 +2,44 @@
 
 #
 # Jorda Chalupka
-# 
+#
 # Last Edit Nov 2, 2016
-# 
+#
 # Should be able to add this into the GUI like a Button.
-# 
+#
 # There's still a lot of work to be done but I wanted to get this out in case
-# there was any issue adding the canvas background to the GUI. 
-# 
+# there was any issue adding the canvas background to the GUI.
+#
 # Feel free to edit anything or work away on pieces.
 #
 from __future__ import division
 from math import *
 from decimal import *
 import Tkinter as tk
-import translation
+# import translation
 
 behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
+
+global rangeVal
+rangeVal = 4
+
+def rangeIncre():
+    global rangeVal
+    temp = rangeVal
+    temp = temp*2
+    if(temp<9223372036854775807):
+        rangeVal = temp
+    print "Range: " + str(rangeVal)
+
+def rangeDecre():
+    global rangeVal
+    temp = rangeVal
+    temp = temp/2
+    if(temp>0):
+        rangeVal = temp
+    print "Range: " + str(rangeVal)
 
 def create_canvas(parent, width, height):
         canvas = tk.Canvas(parent, width=width, height=height);
@@ -49,7 +68,7 @@ def draw_graph_background(canvas, event):
     ## Create Marker Points
     i=0
     points = [-3,-2,-1,0,1,2,3]
-    
+
     while(i * step_x < w or i * step_y < h):
         canvas.create_line(i * step_x, h/2 - 5, i * step_x, h/2 + 5, width=1.5, fill=axis_line_color, tags="background")
         canvas.create_line(w/2 - 5, i * step_y, w/2 + 5, i * step_y, width=1.5, fill=axis_line_color, tags="background")
