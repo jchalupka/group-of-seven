@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import Tkinter as tk
+import sys
+import command_line
 import curve_drawer
 import expression_validator
 from graph_axis import rangeIncre, rangeDecre
@@ -310,15 +312,17 @@ def create_widgets(root):
     go.grid(row=11, column=13, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
     save.grid(row=13, column=3, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
 
-
-
 def main():
-    root = tk.Tk()
-    root.configure(bg="gray75")
-    configure_grid(root)
-    create_widgets(root)
-
-    root.mainloop()
+    if len(sys.argv) == 1:
+        root = tk.Tk()
+        root.configure(bg="gray75")
+        configure_grid(root)
+        create_widgets(root)
+        root.mainloop()
+    elif len(sys.argv) == 2:
+        commandLine.main(sys,sys.argv[1])
+    else:
+        sys.exit("Error. Invalid number of arguments.")
 
 if __name__ == '__main__':
     main()
