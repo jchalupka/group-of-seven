@@ -35,18 +35,18 @@ def add_function(name, function):
 add_operator("+", Left, 2, lambda x, y: x + y)
 add_operator("-", Left, 2, lambda x, y: x - y)
 add_operator("*", Left, 3, lambda x, y: x * y)
-add_operator("/", Left, 3, lambda x, y: divide(x, y))
+add_operator("/", Left, 3, lambda x, y: x / y)
 add_operator("%", Left, 3, lambda x, y: x % y)
 add_operator("^", Right, 4, lambda x, y: x ** y)
 add_operator("!", Left, 5, lambda x: math.factorial(x))
 
 # Trigonometric functions
-add_function("sin", lambda x: math.sin(math.radians(x)))
-add_function("cos", lambda x: math.cos(math.radians(x)))
-add_function("tan", lambda x: math.tan(math.radians(x)))
-add_function("asin", lambda x: math.asin(math.radians(x)))
-add_function("acos", lambda x: math.acos(math.radians(x)))
-add_function("atan", lambda x: math.atan(math.radians(x)))
+add_function("sin", lambda x: math.sin(x))
+add_function("cos", lambda x: math.cos(x))
+add_function("tan", lambda x: math.tan(x))
+add_function("asin", lambda x: math.asin(x))
+add_function("acos", lambda x: math.acos(x))
+add_function("atan", lambda x: math.atan(x))
 
 # Hyperbolic functions
 add_function("sinh", lambda x: math.sinh(x))
@@ -142,6 +142,7 @@ def get_xy_values(postfix_expression, max):
 
         x += step
 
+    print xy_values
     return xy_values
 
 
@@ -152,26 +153,39 @@ def string_to_num(string):
         return int(string)
 
 
-def divide(dividend, divisor):
-    if divisor == 0:
-        return "Divide by zero"
-    else:
-        return dividend / divisor
+# def divide(dividend, divisor):
+#     if divisor == 0:
+#         return "Divide by zero"
+#     else:
+#         return dividend / divisor
 
 
 def evaluate_binary_expression(left_operand, operator, right_operand):
-    left_operand = string_to_num(left_operand)
-    right_operand = string_to_num(right_operand)
-    return OPERATION[operator](left_operand, right_operand)
-
+    try:
+        left_operand = string_to_num(left_operand)
+        right_operand = string_to_num(right_operand)
+        return OPERATION[operator](left_operand, right_operand)
+    except ValueError:
+        return "Domain error"
+    except ZeroDivisionError:
+        return "Divide by zero error"
+    except OverflowError:
+        return "Out of range"
 
 def evaluate_unary_expression(function_token, operand):
     operand = string_to_num(operand)
-    if function_token in FUNCTIONS:
-        return FUNCTION[function_token](operand)
-    else:
-        return OPERATION[operator](operand)
 
+    try:
+        if function_token in FUNCTIONS:
+            return FUNCTION[function_token](operand)
+        else:
+            return OPERATION[operator](operand)
+    except ValueError:
+        return "Domain error"
+    except ZeroDivisionError:
+        return "Divide by zero error"
+    except OverflowError:
+        return "Out of range"
 
 def evaluate_postfix(expression):
     output_stack = []
@@ -200,5 +214,5 @@ def evaluate_postfix(expression):
             output_stack.append(str(result))
         else:
             return "Invalid token"
-
+            
     return output_stack.pop()
