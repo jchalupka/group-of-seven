@@ -21,7 +21,7 @@ def line_maker(points):
 			p_y = y
 
 def calcHeight_Width(canvas, line, max_range, h, w):
-	num_breaks = 6
+	num_breaks = 6 * max_range
 	length_of_unit_w = w/num_breaks
 	length_of_unit_h = h/num_breaks
 	for (x1, y1, x2, y2) in line_maker(line):
@@ -67,5 +67,5 @@ def generate_line(function):
 
 # This is just temporary and will be replaced by a function that the user gives
 def generate_function():
-    function = lambda x: (x[0], math.cos(x[0]*2))
+    function = lambda x: (x[0], math.tan(x[0]*2))
     return function
