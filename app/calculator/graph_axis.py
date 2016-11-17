@@ -70,7 +70,7 @@ def create_canvas(parent, width, height):
         canvas.pack(fill=tk.BOTH, expand=1)
         return canvas
 
-def draw_graph_backgroundButton(canvas):
+def draw_graph_backgroundButton(canvas, max_range):
     canvas.delete('background')
 
     w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
@@ -84,9 +84,8 @@ def draw_graph_backgroundButton(canvas):
 
 
 
-def draw_graph_background(canvas, event):
+def draw_graph_background(canvas, event, max_range):
     canvas.delete('background')
-    global rangeVal
     w, h = event.width, event.height
     step_x = w/6
     step_y = h/6

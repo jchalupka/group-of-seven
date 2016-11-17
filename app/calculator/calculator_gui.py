@@ -80,16 +80,18 @@ def execute_entry(root, status_bar):
 
 
 def buttonPressed(canvas, e, line, direction):
-    graph_axis.draw_graph_backgroundButton(canvas)
-    curve_drawer.draw_curveButton(canvas, line)
+    max_range = getRange()
+    graph_axis.draw_graph_backgroundButton(canvas, max_range)
+    curve_drawer.draw_curveButton(canvas, line, max_range)
     if direction is 1:
         rangeIncre()
     else:
         rangeDecre()
 
 def window_resize(canvas, e, line):
-    graph_axis.draw_graph_background(canvas, e)
-    curve_drawer.draw_curve(canvas, e, line)
+    max_range = getRange()
+    graph_axis.draw_graph_background(canvas, e, max_range)
+    curve_drawer.draw_curve(canvas, e, line, max_range)
 
 def create_widgets(root):
 
