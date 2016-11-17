@@ -7,7 +7,7 @@ import re
 
 Left, Right = range(2)
 
-OPERAND_REGEX = "^[-]?(pi|[exy]|[0-9]+|\.[0-9]+|[0-9]+\.[0-9]+)$"
+OPERAND_REGEX = "[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?|pi|PI|[eExX]"
 OPERATORS = set()
 
 ASSOCIATIVITY = {}
@@ -38,7 +38,7 @@ add_operator("*", Left, 3, lambda x, y: x * y)
 add_operator("/", Left, 3, lambda x, y: divide(x, y))
 add_operator("%", Left, 3, lambda x, y: x % y)
 add_operator("^", Right, 4, lambda x, y: x ** y)
-add_operator("!", Right, 5, lambda x: math.factorial(x))
+add_operator("!", Left, 5, lambda x: math.factorial(x))
 
 # Trigonometric functions
 add_function("sin", lambda x: math.sin(math.radians(x)))
@@ -60,44 +60,11 @@ add_function("atanh", lambda x: math.atanh(x))
 add_function("ceil", lambda x: math.ceil(x))
 add_function("floor", lambda x: math.floor(x))
 add_function("abs", lambda x: math.fabs(x))
-add_function("!", lambda x: math.factorial(x))
 
 # Power and logarithmic functions
 add_function("sqrt", lambda x: math.sqrt(x))
 add_function("log", lambda x: math.log10(x))
 add_function("ln", lambda x: math.log1p(x))
-
-
-Min, Max = range(2)
-
-
-def validate_domain(domain):
-    try:
-        min = int(domain[Min])
-        max = int(domain[Max])
-    except ValueError:
-        return "Invalid range"
-
-    if min >= max:
-        return "Invalid range"
-
-    return (min, max)
-
-
-def evaluate_expression(expression, domain):
-    # validated_expression = validate_expression(expression)
-    # if validated_expression in err.ERROR_MESSAGES:
-    #     return validated_expression
-    # else:
-        # postfix_expression = infix_to_postfix(validated_expression)
-        postfix_expression = infix_to_postfix(expression)
-        # maybe make expression validator change everything to lowercase
-        if "x" in postfix_expression:
-            validated_domain = validate_domain(domain)
-            if validated_domain in err.ERROR_MESSAGES:
-                return validated_domain
-
-
 
 
 def maintain_precedence(operator_stack):
@@ -129,11 +96,11 @@ def infix_to_postfix(expression):
         elif token == "(":
             operator_stack.append(token)
         elif token == ")":
-            while operator_stack[-1] != "(":
+            while operator_stack and operator_stack[-1] != "(":
                 output_queue.append(operator_stack.pop())
 
             left = operator_stack.pop()
-            if operator_stack[-1] in FUNCTIONS:
+            if operator_stack and operator_stack[-1] in FUNCTIONS:
                 output_queue.append(operator_stack.pop())
         else:
             return "Invalid token"
@@ -148,40 +115,34 @@ def infix_to_postfix(expression):
     return output_queue
 
 
-def get_xy_values(postfix_expression, domain):
-    new_expression = []
-    new_xy = []
+def get_xy_values(postfix_expression, max):
+    xy_values = []
 
-    #get negative (x,y)
-    for i in range(domain):
-        xy_values = []
-        hold = []
-        for token in postfix_expression:
-            if token == "x":
-                c = domain - i
-                c = (c - c) - (domain - i)
-                new_expression.append(str(c))
-            else:
-                new_expression.append(token)
-        xy_values+=(str(c), evaluate_postfix(new_expression))
-        hold = tuple(xy_values)
-        new_xy.append(hold)
+    min = max * -1
+    step = (max - min) / 32
 
-    #get positive (x,y)
-    for i in range(domain+1):
-        xy_values = []
-        hold = []
-        for token in postfix_expression:
-            if token == "x":
-                new_expression.append(str(i))
-            else:
-                new_expression.append(token)
-        xy_values+=(str(i), evaluate_postfix(new_expression))
-        hold = tuple(xy_values)
-        new_xy.append(hold)
+    x_indices = [j for j, k in enumerate(postfix_expression) if k == "x"]
 
-    print new_xy
-    return new_xy
+    x = y = min
+
+    while x <= max:
+        expression_copy = list(postfix_expression)
+
+        for x_index in x_indices:
+            expression_copy[x_index] = str(x)
+
+        try:
+            y = evaluate_postfix(expression_copy)
+            y = float(y)
+            if y >= min and y <= max:
+                xy_values.append(tuple((x, y)))
+        except ValueError:
+            return y
+
+        x += step
+
+    return xy_values
+
 
 def string_to_num(string):
     if string.find(".") != -1:
@@ -240,5 +201,3 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
-
-get_xy_values(["x", "4", "+"], 10)
