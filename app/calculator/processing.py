@@ -249,7 +249,7 @@ def infix_to_postfix(expression):
 
     return output_queue
 
-
+# Max is the range
 def get_xy_values(postfix_expression, max):
     xy_values = []
 
@@ -275,7 +275,6 @@ def get_xy_values(postfix_expression, max):
             return y
 
         x += step
-
     return xy_values
 
 
@@ -341,3 +340,4 @@ print evaluate_expression("1 + 2", 10)
 print evaluate_expression("1 +( 2", 10)
 print evaluate_expression("1 / 0", 7)
 print evaluate_expression("1 / x", 5)
+print evaluate_expression("sin(x)", 10)
