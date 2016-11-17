@@ -18,43 +18,81 @@ from decimal import *
 import Tkinter as tk
 # import translation
 
+
+
 behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
-global rangeVal
-rangeVal = 8
+rangeVal = 1
 
-def rangeIncre():
-    global rangeVal
-    temp = rangeVal
-    temp = temp*2
-    if(temp<9223372036854775807):
-        rangeVal = temp
-    print "Range: " + str(rangeVal)
 
-def rangeDecre():
+# sets column width and allows for window resizing
+def configure_grid(root):
+    for column in range(MAX_COLS):
+        root.columnconfigure(column, minsize=MIN_SIZE_PIXELS, weight=1)
+        for row in range(MAX_ROWS):
+            root.rowconfigure(row, weight=1)
+
+def create_marker_points(canvas, w, h, step_x, step_y):
+    i=0
     global rangeVal
-    temp = rangeVal
-    temp = temp/2
-    if(temp>0):
-        rangeVal = temp
-    print "Range: " + str(rangeVal)
-    s = rangeVal
-    for i in range(-s, s+1):
-        print i
+    print "In graph" + str(rangeVal)
+    points = [-3,-2,-1,0,1,2,3]
+    points=[x*rangeVal for x in points]
+    print rangeVal
+    print points
+
+    while(i * step_x < w or i * step_y < h):
+        canvas.create_line(i * step_x, h/2 - 5, i * step_x, h/2 + 5, width=1.5, fill=axis_line_color, tags="background")
+        canvas.create_line(w/2 - 5, i * step_y, w/2 + 5, i * step_y, width=1.5, fill=axis_line_color, tags="background")
+
+        # Axis Labels
+        canvas.create_text(i * step_x, h/2 + 15, text=str(points[i]), tags="background")
+        canvas.create_text(w/2 - 15, i * step_y, text=str(points[6-i]), tags="background")
+        i+=1
+
+
+def draw_grid_lines(canvas, w, h, step_x, step_y):
+    i = 0
+    while i * step_x < w or i * step_y < h:
+        canvas.create_line(i * step_x, 0, i * step_x, h, fill=grid_line_color, tags="background")
+        canvas.create_line(0,i * step_y, w, i * step_y, fill=grid_line_color, tags="background")
+        i += 1
+    canvas.create_rectangle(0, 0, w, h, width=10, outline=behind_canvas_color, tags="background")
+
+def draw_axis_lines(canvas, w, h):
+    canvas.create_line(0, h/2, w, h/2, width=2, fill=axis_line_color, tags="background")
+    canvas.create_line(w/2, 0, w/2, h, width=2, fill=axis_line_color, tags="background")
 
 def create_canvas(parent, width, height):
         canvas = tk.Canvas(parent, width=width, height=height);
         canvas.pack(fill=tk.BOTH, expand=1)
         return canvas
 
-def draw_graph_background(canvas, event):
+def draw_graph_backgroundButton(canvas):
     canvas.delete('background')
-    w, h = event.width, event.height
-    global rangeVal
+
+    w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
     step_x = w/6
     step_y = h/6
+
+    draw_grid_lines(canvas, w, h, step_x, step_y)
+    draw_axis_lines(canvas, w, h)
+    create_marker_points(canvas, w, h, step_x, step_y)
+
+
+
+
+def draw_graph_background(canvas, event):
+    canvas.delete('background')
+    global rangeVal
+    w, h = event.width, event.height
+    step_x = w/6
+    step_y = h/6
+
+    draw_grid_lines(canvas, w, h, step_x, step_y)
+    draw_axis_lines(canvas, w, h)
 
 
     # Draw Grid Lines
@@ -72,7 +110,6 @@ def draw_graph_background(canvas, event):
 
     ## Create Marker Points
     i=0
-    global rangeVal
     points = [-3,-2,-1,0,1,2,3]
     points=[x*rangeVal for x in points]
 
