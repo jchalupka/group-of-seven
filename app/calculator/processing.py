@@ -67,7 +67,142 @@ add_function("log", lambda x: math.log10(x))
 add_function("ln", lambda x: math.log1p(x))
 
 
-def maintain_precedence(operator_stack):
+def find_error(expression):
+    if type(expression) is str:
+        return True
+
+
+def variable_in_expression(expression):
+    try:
+        expression.index("x")
+        return True
+    except ValueError:
+        return False
+
+
+def evaluate_expression(expression, range):
+    infix_expression = valid_arithmetic_expression(expression)    
+    if find_error(infix_expression):
+        return infix_expression
+    
+    postfix_expression = infix_to_postfix(infix_expression) 
+    if find_error(postfix_expression):
+        return postfix_expression
+
+    if variable_in_expression(postfix_expression):
+        return get_xy_values(postfix_expression, range)
+    else:
+        return evaluate_postfix(postfix_expression)
+
+
+def matching_parentheses(expression):
+    parentheses = []
+    for i in expression:
+        if i is '(':
+            parentheses.append(i)
+        elif i is ')':
+            if parentheses:
+                parentheses.pop()
+            else:
+                return False
+    if parentheses:
+        return False
+    else:
+        return True
+
+
+def valid_arithmetic_expression(expression):
+    if not matching_parentheses(expression):
+        return "Mismatched parentheses"
+
+    expression = to_expression_list(expression)
+    expression_copy = list(expression)
+
+    symbols = ['sin','cos','tan',
+               'asin','acos','atan',
+               'sinh','cosh','tanh',
+               'asinh','acosh','atanh',
+               'ceil','floor','abs','sqrt','log','ln',
+               'pi', 'e', '!']
+    symbols += ['-' + symbol for symbol in symbols]
+
+    stack = expression;
+    for token in expression:
+        if token in symbols:
+            loc = expression.index(token)
+            if token == '!':
+                expression[loc] = '*'
+                expression.insert(loc + 1, '1')
+            
+            elif re.match('-*(pi|e)', token):
+                expression[loc] = '1'
+            else:
+                if expression[loc][0] == '-':
+                    expression[loc] = '-1'
+                else:
+                    expression[loc] = '1'
+                expression.insert(loc + 1, '*')
+
+
+    # State 0 can accept number, letter or (
+    # State 1 can accept operation or )
+
+    state = 0
+
+    if not stack:
+        return "Invalid expression"
+
+    # Check for corner case with one variable
+    # if (re.match('-*[xX]', stack[0]) and len(stack) == 1):
+    #     return False
+
+    while stack:
+        token = stack.pop(0)
+        if state is 0:
+            if re.match('^-*x|-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+$',token):
+                state = 1
+
+            elif re.match('^\($', token):
+                state = 0
+            else:
+                return "Invalid expression"
+        elif state is 1:
+            if '-' is token[0]:
+                if token[1:] is not '':
+                    stack.insert(0, token[1:])
+                token = '-'
+
+            if re.match('^[\+\-\/\*\^]$',token):
+                state = 0
+            elif re.match('^\)$',token):
+                state = 1
+            else:
+                return "Invalid expression"
+
+    # At the end of validation state = 1 if valid
+    if state is 1:
+        return expression_copy
+    else:
+        return "Invalid expression"
+
+
+def to_expression_list(expression):
+    expression = expression.lower()
+    expression = expression.replace(' ','')
+    expression = re.compile(r'(-*[a-z]+)|(-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+)|([\+\-\/\*\(\)])').split(expression)
+
+    # wont this remove zeros
+    expression = filter(None, expression)
+
+    # Test is the function begins with y = just take it out
+    if re.match('[yY]\s*=.*', ''.join(expression[0:2])):
+        if (expression[1].split('=')[1] != ''):
+            expression.insert(2,expression[1].split('=')[1])
+        expression = expression[2:]
+    return expression
+
+
+def ordered_by_precedence(operator_stack):
     return (ASSOCIATIVITY[token] == Left and
             PRECEDENCE[token] <= PRECEDENCE[operator_stack[-1]]) \
         or (ASSOCIATIVITY[token] == Right and
@@ -80,7 +215,6 @@ def infix_to_postfix(expression):
     output_queue = []
 
     while expression:
-        global token
         token = expression.pop(0)
 
         if re.match(OPERAND_REGEX, token):
@@ -90,7 +224,7 @@ def infix_to_postfix(expression):
         elif token in OPERATORS:
             while operator_stack \
               and operator_stack[-1] in OPERATORS \
-              and maintain_precedence(operator_stack):
+              and ordered_by_precedence(operator_stack):
                 output_queue.append(operator_stack.pop())
 
             operator_stack.append(token)
@@ -175,7 +309,7 @@ def evaluate_unary_expression(function_token, operand):
 
 def evaluate_postfix(expression):
     output_stack = []
-    print expression
+
     while expression:
         token = expression.pop(0)
 
@@ -202,3 +336,8 @@ def evaluate_postfix(expression):
             return "Invalid token"
 
     return output_stack.pop()
+
+print evaluate_expression("1 + 2", 10)
+print evaluate_expression("1 +( 2", 10)
+print evaluate_expression("1 / 0", 7)
+print evaluate_expression("1 / x", 5)
