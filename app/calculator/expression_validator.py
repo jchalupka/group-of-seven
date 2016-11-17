@@ -35,7 +35,7 @@ def gui_function_validator(expression, status_root):
         print result
 
         answer = processing.evaluate_postfix(result)
-        answer = answer[0]
+        #answer = answer[0]
 
 
         # Call Shuntingyard here
@@ -140,7 +140,7 @@ def valid_arithmetic_expression(expression):
                     stack.insert(0, token[1:])
                 token = '-'
 
-            if re.match('^[\+\-\/\*\^]$',token):
+            if re.match('^[\+\-\/\*\^\%]$',token):
                 state = 0
             elif re.match('^\)$',token):
                 state = 1

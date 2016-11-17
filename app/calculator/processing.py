@@ -80,6 +80,7 @@ def infix_to_postfix(expression):
     output_queue = []
 
     while expression:
+        global token
         token = expression.pop(0)
 
         if re.match(OPERAND_REGEX, token):
@@ -174,7 +175,7 @@ def evaluate_unary_expression(function_token, operand):
 
 def evaluate_postfix(expression):
     output_stack = []
-
+    print expression
     while expression:
         token = expression.pop(0)
 
