@@ -1,11 +1,11 @@
 #!/usr/bin/python
-
+from __future__ import division
 import Tkinter as tk
 import sys
 import command_line
 import curve_drawer
 import expression_validator
-from graph_axis import rangeIncre, rangeDecre
+import graph_axis
 
 
 MIN_SIZE_PIXELS = 55
@@ -17,24 +17,31 @@ behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
-global rangeVal
-rangeVal = 8
+def getRange():
+    import graph_axis
+    return graph_axis.rangeVal
+    # Add line here eventually
+
+def setRange(val):
+    import graph_axis
+    graph_axis.rangeVal = val
+    # Add line here eventually
 
 def rangeIncre():
-    global rangeVal
-    temp = rangeVal
-    temp = temp*2
-    if(temp<9223372036854775807):
-        rangeVal = temp
-        print "Range: " + str(rangeVal)
+    rangeVal = getRange()
+    temp = rangeVal*2
+    if(rangeVal<9223372036854775807):
+        setRange(temp)
+       
+    print "Range: " + str(rangeVal)
 
 
 def rangeDecre():
-    global rangeVal
+    rangeVal = getRange()
     temp = rangeVal
     temp = temp/2
     if(temp>0):
-        rangeVal = temp
+        setRange(temp)
     print "Range: " + str(rangeVal)
 
 # sets column width and allows for window resizing
@@ -71,62 +78,17 @@ def execute_entry(root, status_bar):
         add_to_entry(root, answer)
 
 
-def draw_grid_lines(canvas, w, h, step_x, step_y):
-    i = 0
-    while i * step_x < w or i * step_y < h:
-        canvas.create_line(i * step_x, 0, i * step_x, h, fill=grid_line_color, tags="background")
-        canvas.create_line(0,i * step_y, w, i * step_y, fill=grid_line_color, tags="background")
-        i += 1
-    canvas.create_rectangle(0, 0, w, h, width=10, outline=behind_canvas_color, tags="background")
 
-def draw_axis_lines(canvas, w, h):
-    canvas.create_line(0, h/2, w, h/2, width=2, fill=axis_line_color, tags="background")
-    canvas.create_line(w/2, 0, w/2, h, width=2, fill=axis_line_color, tags="background")
-
-def create_marker_points(canvas, w, h, step_x, step_y):
-    i=0
-    global rangeVal
-    points = [-3,-2,-1,0,1,2,3]
-    points=[x*rangeVal for x in points]
-
-    while(i * step_x < w or i * step_y < h):
-        canvas.create_line(i * step_x, h/2 - 5, i * step_x, h/2 + 5, width=1.5, fill=axis_line_color, tags="background")
-        canvas.create_line(w/2 - 5, i * step_y, w/2 + 5, i * step_y, width=1.5, fill=axis_line_color, tags="background")
-
-        # Axis Labels
-        canvas.create_text(i * step_x, h/2 + 15, text=str(points[i]), tags="background")
-        canvas.create_text(w/2 - 15, i * step_y, text=str(points[6-i]), tags="background")
-        i+=1
-
-def buttonPressed(canvas, e, line):
-    draw_graph_backgroundButton(canvas)
+def buttonPressed(canvas, e, line, direction):
+    graph_axis.draw_graph_backgroundButton(canvas)
     curve_drawer.draw_curveButton(canvas, line)
-
-def draw_graph_backgroundButton(canvas):
-    canvas.delete('background')
-
-    w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
-
-    step_x = w/6
-    step_y = h/6
-
-    draw_grid_lines(canvas, w, h, step_x, step_y)
-    draw_axis_lines(canvas, w, h)
-    create_marker_points(canvas, w, h, step_x, step_y)
-
-def draw_graph_background(canvas, event):
-    canvas.delete('background')
-    w, h = event.width, event.height
-    step_x = w/6
-    step_y = h/6
-
-    draw_grid_lines(canvas, w, h, step_x, step_y)
-    draw_axis_lines(canvas, w, h)
-    create_marker_points(canvas, w, h, step_x, step_y)
-
+    if direction is 1:
+        rangeIncre()
+    else:
+        rangeDecre()
 
 def window_resize(canvas, e, line):
-    draw_graph_background(canvas, e)
+    graph_axis.draw_graph_background(canvas, e)
     curve_drawer.draw_curve(canvas, e, line)
 
 def create_widgets(root):
@@ -224,10 +186,10 @@ def create_widgets(root):
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
     #Range up and down buttons, they call imported functions in graph_axis
-    rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75", command=lambda: rangeIncre())
-    rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75",command=lambda: rangeDecre())
-    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function)))
-    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function)))
+    rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75")
+    rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75")
+    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function), 1))
+    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function),-1))
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
