@@ -1,14 +1,51 @@
 #!/usr/bin/env python
 
 import app.calculator.processing as pro
+import app.calculator.expression_validator as valid
 import unittest
 
 
 class TestProcessing(unittest.TestCase):
 
-
-    in_func = ["sin", "20"]
-    post_func = ["20", "sin"]
+    def test_evaluate_expression(self):
+        self.assertEqual(pro.evaluate_expression("4", 10), "4")
+        # self.assertEqual(pro.evaluate_expression("1-2", 10), "-1")
+        self.assertEqual(pro.evaluate_expression("2 * 2 + 3", 10), "7")
+        self.assertEqual(pro.evaluate_expression("(2 * 2) + 3", 10), "7")
+        self.assertEqual(pro.evaluate_expression("2/1 * (3 * -4)", 10), "-24.0")
+        self.assertEqual(pro.evaluate_expression("2/1 * (3 * -4)", 10), "-24.0")
+        # self.assertEqual(pro.evaluate_expression("y = x/2", 10), [])
+        # self.assertEqual(pro.evaluate_expression("y = (x/3 + x)", 20), [])
+        # self.assertEqual(pro.evaluate_expression("y = (  (x + 4) * 2 - 3  )", 40), [])
+        # self.assertEqual(pro.evaluate_expression("y = (x-x)/(2+60*x)-( x*100)", 80), [])
+        # self.assertEqual(pro.evaluate_expression("y = sin(x)", 160), [])
+        # self.assertEqual(pro.evaluate_expression("sin(x)", 200), [])
+        # self.assertEqual(pro.evaluate_expression("tan(x)", 700), [])
+        # self.assertEqual(pro.evaluate_expression("y = 2 * (sin(x) + 2/5) - tan(7000)", 800), [])
+        # self.assertEqual(pro.evaluate_expression("2.5 * 9.001, 10"), [])
+        self.assertEqual(pro.evaluate_expression("y = helloWorld", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("20x", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("4 y", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("x+ ", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("+123", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("( x + y", 10), "Mismatched parentheses")
+        self.assertEqual(pro.evaluate_expression("(m + n", 10), "Mismatched parentheses")
+        self.assertEqual(pro.evaluate_expression("xy)", 10), "Mismatched parentheses")
+        self.assertEqual(pro.evaluate_expression("(y 10)", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("(x - 61) - (2-400))", 10), "Mismatched parentheses")
+        self.assertEqual(pro.evaluate_expression("(a-b/(x*y)", 10), "Mismatched parentheses")
+        self.assertEqual(pro.evaluate_expression("(a+b)/((c-100)20", 10), "Mismatched parentheses")
+        self.assertEqual(pro.evaluate_expression("(i- j)(t+k )", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("y=", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("y=y", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("a+1", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("y = a + b", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("y = y + 2", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("y", 10), "Invalid expression")
+        self.assertEqual(pro.evaluate_expression("s", 10), "Invalid expression")
+        # self.assertEqual(pro.evaluate_expression("x + x", 10), [])
+        # self.assertEqual(pro.evaluate_expression("y = x+x", 10), [])
+        # self.assertEqual(pro.evaluate_expression("y = x/2", 10), [])
 
     def test_infix_to_postfix(self):
         self.assertEqual(pro.infix_to_postfix(
@@ -59,6 +96,9 @@ class TestProcessing(unittest.TestCase):
         self.assertEqual(pro.evaluate_unary_expression("sqrt", "2"), 1.4142135623730951)
         self.assertEqual(pro.evaluate_unary_expression("log", "10"), 1)
         self.assertEqual(pro.evaluate_unary_expression("ln", "10"), 2.3978952727983707)
+
+    def test_get_xy_values(self):
+        self.assertEqual(pro.get_xy_values(["x", "2", "-"], 4), [(-2.0, -4.0), (-1.75, -3.75), (-1.5, -3.5), (-1.25, -3.25), (-1.0, -3.0), (-0.75, -2.75), (-0.5, -2.5), (-0.25, -2.25), (0.0, -2.0), (0.25, -1.75), (0.5, -1.5), (0.75, -1.25), (1.0, -1.0), (1.25, -0.75), (1.5, -0.5), (1.75, -0.25), (2.0, 0.0), (2.25, 0.25), (2.5, 0.5), (2.75, 0.75), (3.0, 1.0), (3.25, 1.25), (3.5, 1.5), (3.75, 1.75), (4.0, 2.0)])
 
 if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(TestProcessing)
