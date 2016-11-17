@@ -19,10 +19,14 @@ def gui_function_validator(expression, status_root):
     answer = None
 
     if not (valid_p and valid_a):
-        calculator_gui.update_status(status_root, result_message(valid_p, valid_a))
-        return None
+        if status_root is not None:
+            calculator_gui.update_status(status_root, result_message(valid_p, valid_a))
+            return None
+        else:
+            answer = result_message(valid_p, valid_a)
     else:
-        calculator_gui.update_status(status_root, '')
+        if status_root is not None:
+            calculator_gui.update_status(status_root, '')
         print 'I\'m going to call Shuntingyard'
         term_list = to_expression_list(expression)
         print term_list
