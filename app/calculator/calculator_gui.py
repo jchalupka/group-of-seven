@@ -32,7 +32,7 @@ def rangeIncre():
     temp = rangeVal*2
     if(rangeVal<9223372036854775807):
         setRange(temp)
-       
+
     print "Range: " + str(rangeVal)
 
 
@@ -83,7 +83,7 @@ def execute_entry(root, status_bar):
 
 
 
-def buttonPressed(canvas, e, line, direction):
+def buttonPressed(canvas, line, direction):
     max_range = getRange()
     graph_axis.draw_graph_backgroundButton(canvas, max_range)
     curve_drawer.draw_curveButton(canvas, line, max_range)
@@ -106,7 +106,7 @@ def function_window(root):
     asin_button = tk.Button(top, text = "ASIN", command=lambda:set_function(root,"asin"))
     acos_button = tk.Button(top, text = "ACOS", command=lambda:set_function(root,"acos"))
     atan_button = tk.Button(top, text = "ATAN", command=lambda:set_function(root,"atan"))
-    
+
     sin_button.grid(row=1, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
     cos_button.grid(row=2, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
     tan_button.grid(row=3, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
@@ -116,7 +116,7 @@ def function_window(root):
 
     #Hyperbolic Functions
     sinh_button = tk.Button(top, text = "SINH", command=lambda:set_function(root,"sinh"))
-    cosh_button = tk.Button(top, text = "COSH", command=lambda:set_function(root,"cosh")) 
+    cosh_button = tk.Button(top, text = "COSH", command=lambda:set_function(root,"cosh"))
     tanh_button = tk.Button(top, text = "TANH", command=lambda:set_function(root,"tanh"))
     asinh_button = tk.Button(top, text = "ASINH", command=lambda:set_function(root,"sinh"))
     acosh_button = tk.Button(top, text = "ACOSH", command=lambda:set_function(root,"cosh"))
@@ -243,10 +243,8 @@ def create_widgets(root):
     subtract = tk.Button(root, text=u"\u2212", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "-"))
 
     #Range up and down buttons, they call imported functions in graph_axis
-    rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75")
-    rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75")
-    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function), 1))
-    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function),-1))
+    rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75",command=lambda:buttonPressed(canvas, curve_drawer.generate_line(function), 1))
+    rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75",command=lambda:buttonPressed(canvas, curve_drawer.generate_line(function),-1))
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
@@ -316,7 +314,7 @@ def create_widgets(root):
     three.grid(row=11, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     subtract.grid(row=11, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     function_button.grid(row=13, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    
+
     zero.grid(row=12, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     decimal.grid(row=12, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     negative.grid(row=12, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
