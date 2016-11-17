@@ -87,7 +87,6 @@ def buttonPressed(canvas, e, line, direction):
     else:
         rangeDecre()
 
-s
 def window_resize(canvas, e, line):
     graph_axis.draw_graph_background(canvas, e)
     curve_drawer.draw_curve(canvas, e, line)
