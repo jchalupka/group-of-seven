@@ -216,7 +216,7 @@ def evaluate_unary_expression(function_token, operand):
 
 def evaluate_postfix(expression):
     output_stack = []
-    print expression
+
     while expression:
         token = expression.pop(0)
 
