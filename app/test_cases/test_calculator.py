@@ -49,16 +49,16 @@ class TestProcessing(unittest.TestCase):
         self.assertEqual(pro.evaluate_binary_expression("1", "/", "2"), 0.5)
         self.assertEqual(pro.evaluate_binary_expression("1", "*", "2"), 2)
 
-    def test_evaluate_function_expression(self):
-        self.assertEqual(pro.evaluate_function_expression("sinh", "2.5"), 6.0502044810397875)
+    def test_evaluate_unary_expression(self):
+        self.assertEqual(pro.evaluate_unary_expression("sinh", "2.5"), 6.0502044810397875)
 
-        self.assertEqual(pro.evaluate_function_expression("floor", "2.2"), 2.0)
-        self.assertEqual(pro.evaluate_function_expression("ceil", "2.2"), 3.0)
-        self.assertEqual(pro.evaluate_function_expression("abs", "-2"), 2)
+        self.assertEqual(pro.evaluate_unary_expression("floor", "2.2"), 2.0)
+        self.assertEqual(pro.evaluate_unary_expression("ceil", "2.2"), 3.0)
+        self.assertEqual(pro.evaluate_unary_expression("abs", "-2"), 2)
 
-        self.assertEqual(pro.evaluate_function_expression("sqrt", "2"), 1.4142135623730951)
-        self.assertEqual(pro.evaluate_function_expression("log", "10"), 1)
-        self.assertEqual(pro.evaluate_function_expression("ln", "10"), 2.3978952727983707)
+        self.assertEqual(pro.evaluate_unary_expression("sqrt", "2"), 1.4142135623730951)
+        self.assertEqual(pro.evaluate_unary_expression("log", "10"), 1)
+        self.assertEqual(pro.evaluate_unary_expression("ln", "10"), 2.3978952727983707)
 
 if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(TestProcessing)
