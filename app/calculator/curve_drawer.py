@@ -20,6 +20,21 @@ def line_maker(points):
 			p_x = x
 			p_y = y
 
+def draw_curveButton(canvas,line):
+	canvas.delete('line')
+
+	w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
+
+	num_breaks = 6
+	length_of_unit_w = w/num_breaks
+	length_of_unit_h = h/num_breaks
+	for (x1, y1, x2, y2) in line_maker(line):
+		x1 = (w/2) + (length_of_unit_w * x1)
+		x2 = (w/2) + (length_of_unit_w * x2)
+		y1 = (h/2) - (length_of_unit_h * y1)
+		y2 = (h/2) - (length_of_unit_h * y2)
+		canvas.create_line(x1, y1, x2, y2, width=1, tags='line')
+
 def draw_curve(canvas, event, line):
 	canvas.delete('line')
 
