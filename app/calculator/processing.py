@@ -113,6 +113,7 @@ def infix_to_postfix(expression):
     output_queue = []
 
     while expression:
+        global token
         token = expression.pop(0)
 
         if re.match(OPERAND_REGEX, token):
@@ -152,13 +153,15 @@ def get_xy_values(postfix_expression, domain):
     new_expression = []
     new_xy = []
 
+    print postfix_expression
+
     #get negative (x,y)
     for i in range(domain):
+        c = domain - i
         xy_values = []
         hold = []
         for token in postfix_expression:
             if token == "x":
-                c = domain - i
                 c = (c - c) - (domain - i)
                 new_expression.append(str(c))
             else:
@@ -213,7 +216,7 @@ def evaluate_unary_expression(function_token, operand):
 
 def evaluate_postfix(expression):
     output_stack = []
-
+    print expression
     while expression:
         token = expression.pop(0)
 
@@ -241,4 +244,5 @@ def evaluate_postfix(expression):
 
     return output_stack.pop()
 
-get_xy_values(["x", "4", "+"], 10)
+#evaluate_postfix(["5", "sin"])
+#get_xy_values(["x", "sin"], 10)
