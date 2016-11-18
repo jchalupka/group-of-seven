@@ -32,6 +32,8 @@ def rangeIncre():
     rangeVal = getRange()
     temp = rangeVal*2.0
     if(rangeVal<9223372036854775807):
+        if(temp >= 1.0):
+            temp = int(temp)
         setRange(temp)
 
     print "Range: " + str(rangeVal)
@@ -42,6 +44,8 @@ def rangeDecre():
     temp = rangeVal
     temp = temp/2.0
     if(temp>0):
+        if(temp >= 1.0):
+            temp = int(temp)
         setRange(temp)
     print "Range: " + str(rangeVal)
 
