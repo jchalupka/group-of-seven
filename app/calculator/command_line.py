@@ -9,7 +9,7 @@ def evaluate_from_file(filename):
             print "------------------------------------------------------------------------------"
             for expression in f:
                 expression = expression.replace("\n", "")
-                result = processing.evaluate_expression(expression, None)
+                result = processing.evaluate_expression(expression, 1)
                 try:
                     float(result)
                     print columns.format(expression, " = " , result)
