@@ -8,7 +8,7 @@ import re
 Left, Right = range(2)
 
 OPERAND_REGEX = "[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?|pi|PI|[eExX]"
-TOKEN_REGEX = "(-*\w+)|(-*\.\d+|-*\d+\.\d+|-*\d+)|([\+\-\/\*\(\)])"
+TOKEN_REGEX = "([a-z]+)|(\.\d+|\d+\.\d+|\d+)|([\+\-\/\*\(\)])"
 
 OPERATORS = set()
 
@@ -69,6 +69,8 @@ add_function("sqrt", lambda x: math.sqrt(x))
 add_function("log", lambda x: math.log10(x))
 add_function("ln", lambda x: math.log1p(x))
 
+add_function("neg", lambda x: -x)
+
 
 def find_error(expression):
     if type(expression) is str:
@@ -82,14 +84,6 @@ def variable_in_expression(expression):
     except ValueError:
         return False
 
-
-def fix_negatives(expression):
-    print 'working on it'
-    # for index, token in enumerate(expression):
-    #     if not token[0] 
-    #     if token[index] is '-':
-    #         expression[index] = '+'
-    #         expression.insert(index+1, token)
 
 def evaluate_expression(expression, range):
     infix_expression = valid_arithmetic_expression(expression)
@@ -134,12 +128,11 @@ def valid_arithmetic_expression(expression):
                'sinh', 'cosh', 'tanh',
                'asinh', 'acosh', 'atanh',
                'ceil', 'floor', 'abs', 'sqrt', 'log', 'ln',
-               'pi', 'e', '!', '-']
+               'pi', 'e', '!', 'neg']
     symbols += ['-' + symbol for symbol in symbols]
 
     stack = expression
     for i, token in enumerate(expression):
-        print expression[i][0]
         if token in symbols:
             if token == '!':
                 expression[i] = '*'
@@ -153,7 +146,6 @@ def valid_arithmetic_expression(expression):
                 else:
                     expression[i] = '1'
                 expression.insert(i + 1, '*')
-    print expression
 
     # State 0 can accept number, letter or (
     # State 1 can accept operation or )
@@ -169,7 +161,7 @@ def valid_arithmetic_expression(expression):
     while stack:
         token = stack.pop(0)
         if state is 0:
-            if re.match('^-*x|-*\.\d+|-*\d+\.\d+|-*\d+$', token):
+            if re.match('^x|\.\d+|\d+\.\d+|\d+$', token):
                 state = 1
 
             elif re.match('^\($', token):
@@ -198,19 +190,21 @@ def valid_arithmetic_expression(expression):
 
 def fix_negatives(expression):
     for i, token in enumerate(expression):
-        if re.match("-(\w+|\d+|\d+\.\d+|\.\d+)", token):
-            if i == 0:
-                continue
-            elif expression[i - 1] in OPERATORS \
+        if re.match("-", token):
+            if i == 0 \
+                    or expression[i - 1] in OPERATORS \
                     or expression[i - 1] in FUNCTIONS \
-                    or expression[i - 1] in PARENTHESES:
-                continue
-            else:
-                expression[i] = token.replace("-", "")
-                expression.insert(i, "-")
-        elif re.match("--(\w+|\d+|\d+\.\d+|\.\d+)", token):
-            expression[i] = expression[i][1:]
-            expression.insert(i, "-")
+                    or expression[i - 1] == "(":
+                expression[i] = "neg"
+
+    for i, token in enumerate(expression):
+        if re.match("neg", token):
+            if i + 1 < len(expression) and expression[i + 1] == "neg":
+                expression[i] = ""
+                expression[i + 1] = ""
+
+    expression = filter(None, expression)
+    return expression
 
 
 def remove_y(expression): 
@@ -221,6 +215,8 @@ def remove_y(expression):
     return expression
 
 
+    return expression
+
 
 def to_expression_list(expression):
     
@@ -229,10 +225,8 @@ def to_expression_list(expression):
     expression = re.compile(TOKEN_REGEX).split(expression)
     expression = filter(None, expression)
     expression = remove_y(expression)
-
-
-    fix_negatives(expression)
-    
+    expression = fix_negatives(expression)
+    expression = remove_y(expression)
 
     return expression
 
@@ -309,7 +303,6 @@ def get_xy_values(postfix_expression, max):
         except ValueError:
             x += step
             continue
-            #return y
 
         x += step
 
@@ -385,6 +378,19 @@ def evaluate_postfix(expression):
     return output_stack.pop()
 
 
-# print evaluate_expression("1 + 2 - -3", 10)
 # print evaluate_expression("1 - 3 / 2", 10)
-print evaluate_expression("-3", 10)
+# print evaluate_expression("-3", 10)
+# print to_expression_list("-sin(5)")
+# print evaluate_expression("---------5", 10)
+# print to_expression_list("---------5")
+# print to_expression_list("-(-5)")
+# print evaluate_expression("-(-5)", 10)
+# print to_expression_list("-sin(-5)")
+# print evaluate_expression("-sin(-5)", 10)
+# print to_expression_list("1-(--5)")
+# print evaluate_expression("1-(--5)", 10)
+# print evaluate_expression("x * x", 10)
+# print to_expression_list("x * x")
+# print to_expression_list("-3")
+# print to_expression_list("--3")
+# print to_expression_list("1 + neg3")
