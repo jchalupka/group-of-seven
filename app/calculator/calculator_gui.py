@@ -26,7 +26,7 @@ def setPoints(new_points):
     import processing
     processing.points[0] = new_points
     #print new_points
-    
+
 
 def getRange():
     import graph_axis
@@ -108,9 +108,9 @@ def set_function(root,text):
 
 def buttonPressed(canvas, e, line, direction):
     if direction is 1:
-        rangeIncre()
-    elif direction is -1:
         rangeDecre()
+    elif direction is -1:
+        rangeIncre()
 
     max_range = getRange()
     graph_axis.draw_graph_backgroundButton(canvas, max_range)
@@ -197,7 +197,7 @@ def create_widgets(root):
         entry7.insert(0, myList[6])
 
     def save_file(root, text):
-        data=open('output.txt', 'w')
+        data=open('input.txt', 'w')
         data.write(entry1.get())
         data.write("\n")
         data.write(entry2.get())
@@ -280,7 +280,7 @@ def create_widgets(root):
     negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_first(root, "-"))
     add = tk.Button(root, text="+", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "+"))
     clear = tk.Button(root, text="Clear", highlightbackground="gray39", command=lambda:clear_entry(root))
-    
+
     go = tk.Button(root, text="=", highlightbackground="gray39")
     #go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, getRange()))
     go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, getRange()))
