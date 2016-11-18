@@ -68,6 +68,8 @@ def execute_entry(root):
     try:
         float(result)
         add_to_entry(root, " = ")
+        if result > 1000000 or result < 1/1000000:
+            result = '{:.2e}'.format(float(result))
         add_to_entry(root, result)
     except ValueError:
         tkmsg.showinfo("Attention", result)
