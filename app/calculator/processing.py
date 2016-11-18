@@ -347,4 +347,3 @@ def evaluate_postfix(expression):
             return "Invalid token"
             
     return output_stack.pop()
-
