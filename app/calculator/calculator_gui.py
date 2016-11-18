@@ -8,6 +8,7 @@ import command_line
 import curve_drawer
 import processing
 import graph_axis
+import math
 
 MIN_SIZE_PIXELS = 55
 MAX_ROWS = 11
@@ -47,7 +48,6 @@ def range_increment():
             temp = int(temp)
         set_range(temp)
 
-    print "Range: " + str(range_value)
 
 
 def range_decrement():
@@ -58,7 +58,6 @@ def range_decrement():
         if(temp >= 1.0):
             temp = int(temp)
         set_range(temp)
-    print "Range: " + str(range_value)
 
 
 def execute_entry(root):
@@ -66,13 +65,12 @@ def execute_entry(root):
     expression = entry.get()
 
     result = processing.evaluate_expression(expression, get_range()*100)
-    print result
     try:
-        float(result)
+        result = float(result)
         add_to_entry(root, " = ")
-        if (abs(int(result)) > 1000000):
-            print 'weird'
+        if (abs(result) > 1000000.0 or abs(result) < 1/1000000.0):
             result = '{:.2e}'.format(float(result))
+
         add_to_entry(root, result)
     except ValueError:
         tkmsg.showinfo("Attention", result)
