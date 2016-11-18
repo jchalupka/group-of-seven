@@ -127,7 +127,7 @@ def window_resize(canvas, e, line):
     curve_drawer.draw_curve(canvas, e, line, max_range)
 
 
-def function_window(root):
+def create_function_window(root):
     top = tk.Toplevel(master=root)
     top.geometry('+955+100')
 
@@ -324,7 +324,7 @@ def create_widgets(root):
                        command=lambda: add_to_entry(root, "/"))
     function_button = tk.Button(root, text="Functions",
                                 highlightbackground="gray",
-                                command=lambda: function_window(root))
+                                command=lambda: create_function_window(root))
 
     four = tk.Button(root, text="4", highlightbackground="DarkOrange1",
                      command=lambda: add_to_entry(root, "4"))
