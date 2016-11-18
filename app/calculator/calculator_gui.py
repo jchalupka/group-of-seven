@@ -20,11 +20,11 @@ axis_line_color = "black"
 
 def getPoints():
     import processing
-    return processing.points[0]
+    return processing.points
 
 def setPoints(new_points):
     import processing
-    processing.points[0] = new_points
+    processing.points = new_points
     #print new_points
 
 
