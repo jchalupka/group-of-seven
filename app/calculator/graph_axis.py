@@ -57,9 +57,11 @@ def checkRange(points):
 def create_marker_points(canvas, w, h, step_x, step_y,max_range):
     i=0
     points = [-3,-2,-1,0,1,2,3]
-    points=[x*max_range for x in points]
-    points = checkRange(points)
     print points
+
+    points=[x*max_range for x in points]
+    print points
+    #points = checkRange(points)
 
     while(i * step_x < w or i * step_y < h):
         canvas.create_line(i * step_x, h/2 - 5, i * step_x, h/2 + 5, width=1.5, fill=axis_line_color, tags="background")
@@ -115,28 +117,28 @@ def draw_graph_background(canvas, event, max_range):
 
 
 
-def draw_line(canvas, event, line):
-    canvas.delete('line')
-    w, h = event.width, event.height
+# def draw_line(canvas, event, line):
+#     canvas.delete('line')
+#     w, h = event.width, event.height
 
-    num_breaks = 6
-    length_of_unit_w = w/num_breaks
-    length_of_unit_h = h/num_breaks
+#     num_breaks = 6
+#     length_of_unit_w = w/num_breaks
+#     length_of_unit_h = h/num_breaks
 
-    circle_size = 3
+#     circle_size = 3
 
-    for point in line:
-        x,y = point[0], point[1]
+#     for point in line:
+#         x,y = point[0], point[1]
 
-        x = (w/2) + (length_of_unit_w * x)
-        y = (h/2) - (length_of_unit_h * y)
+#         x = (w/2) + (length_of_unit_w * x)
+#         y = (h/2) - (length_of_unit_h * y)
 
-        canvas.create_oval(
-            x-circle_size/2,
-            y-circle_size/2,
-            x+circle_size/2,
-            y+circle_size/2, fill='red', tags='line')
-    canvas.tag_raise('line')
+#         canvas.create_oval(
+#             x-circle_size/2,
+#             y-circle_size/2,
+#             x+circle_size/2,
+#             y+circle_size/2, fill='red', tags='line')
+#     canvas.tag_raise('line')
 
 
 

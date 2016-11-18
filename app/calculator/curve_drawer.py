@@ -9,9 +9,35 @@ import math
 import Tkinter as tk
 
 
-def show_new_line(root, e):
-	calculator_gui.execute_entry(root, e)
-	# graph_axis.window_resize(root, e, calculator_gui.getPoints())
+def show_new_line(root,max_range):
+	calculator_gui.execute_entry(root)
+	draw_curveButton(root, calculator_gui.getPoints(), max_range)
+	# graph_axis.draw_graph_backgroundButton(root, max_range)
+	#graph_axis.draw_line_button(root,calculator_gui.getPoints())
+
+
+# def draw_line_button(canvas, line):
+#     canvas.delete('line')
+#     w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
+
+#     num_breaks = 6
+#     length_of_unit_w = w/num_breaks
+#     length_of_unit_h = h/num_breaks
+
+#     circle_size = 3
+
+#     for point in line:
+#         x,y = point[0], point[1]
+
+#         x = (w/2) + (length_of_unit_w * x)
+#         y = (h/2) - (length_of_unit_h * y)
+
+#         canvas.create_oval(
+#             x-circle_size/2,
+#             y-circle_size/2,
+#             x+circle_size/2,
+#             y+circle_size/2, fill='red', tags='line')
+#     canvas.tag_raise('line')
 
 
 def line_maker(points):
@@ -44,8 +70,7 @@ def draw_curveButton(canvas,line, max_range):
 
 	w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
 	# print line
-	# if not line:
-	# 	calcHeight_Width(canvas, line, max_range, h,w)
+	calcHeight_Width(canvas, line, max_range, h,w)
 
 # Put the points here <----
 def draw_curve(canvas, event, line, max_range): # <--- here

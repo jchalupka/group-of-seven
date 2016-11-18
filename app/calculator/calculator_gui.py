@@ -59,11 +59,12 @@ def rangeDecre():
         setRange(temp)
     print "Range: " + str(rangeVal)
 
-def execute_entry(root, event):
+def execute_entry(root):
     entry = root.focus_get()
     expression = entry.get()
 
     result = processing.evaluate_expression(expression, getRange())
+    print result
     try:
         float(result)
         add_to_entry(root, " = ")
@@ -71,10 +72,10 @@ def execute_entry(root, event):
     except ValueError:
         tkmsg.showinfo("Attention", result)
     except TypeError:
-        print (1,result)
+        # print (1,result)
+        #print 'These are the results: ' + str(result)
         setPoints(result)
         print "graph"
-    print 'Made it here'
 
 # sets column width and allows for window resizing
 def configure_grid(root):
@@ -271,8 +272,8 @@ def create_widgets(root):
     #Range up and down buttons, they call imported functions in graph_axis
     rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75")
     rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75")
-    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(getPoints()), 1))
-    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(getPoints()),-1))
+    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, getPoints(), 1))
+    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, getPoints(),-1))
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
@@ -281,7 +282,7 @@ def create_widgets(root):
     clear = tk.Button(root, text="Clear", highlightbackground="gray39", command=lambda:clear_entry(root))
     
     go = tk.Button(root, text="=", highlightbackground="gray39")
-    go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, e))
+    go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, getRange()))
 
     load = tk.Button(root, text="Load", highlightbackground="gray75", command=lambda:load_file(root, "Load"))
     save = tk.Button(root, text="Save", highlightbackground="gray75", command=lambda:save_file(root, "Save"))
