@@ -63,7 +63,7 @@ def calcHeight_Width(canvas, line, max_range, h, w):
 		x2 = (w/2) + (length_of_unit_w * x2)
 		y1 = (h/2) - (length_of_unit_h * y1)
 		y2 = (h/2) - (length_of_unit_h * y2)
-		canvas.create_line(x1, y1, x2, y2, width=1, tags='line')
+		canvas.create_line(x1, y1, x2, y2, width=2, tags='line')
 
 def draw_curveButton(canvas,line, max_range):
 	canvas.delete('line')

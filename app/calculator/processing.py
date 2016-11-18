@@ -282,9 +282,9 @@ def infix_to_postfix(expression):
 
 def get_xy_values(postfix_expression, max):
     xy_values = []
-
+    value = 32 * max
     min = max * -1
-    step = (max - min) / 32
+    step = (max - min) / value
 
     x_indices = [j for j, k in enumerate(postfix_expression) if k == "x"]
 
