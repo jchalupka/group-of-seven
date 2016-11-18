@@ -1,10 +1,11 @@
 #!/usr/bin/python
 from __future__ import division
 import Tkinter as tk
+import tkMessageBox as tkmsg
 import sys
 import command_line
 import curve_drawer
-import expression_validator
+import processing
 import graph_axis
 
 
@@ -66,21 +67,26 @@ def clear_entry(root):
 def get_answer(equation):
     return eval(equation)
 
-def update_status(status_bar, response):
-    status_bar.config(text=response)
 
 def set_function(root,text):
     entry = root.focus_lastfor()
     entry.insert(tk.END,text)
 
+
 def execute_entry(root, status_bar):
     entry = root.focus_get()
-    equation = entry.get()
-    answer  = expression_validator.gui_function_validator(equation, status_bar)
-    if answer is not None:
-        add_to_entry(root, " = ")
-        add_to_entry(root, answer)
+    expression = entry.get()
 
+    result = processing.evaluate_expression(expression, getRange())
+    try:
+        float(result)
+        add_to_entry(root, " = ")
+        add_to_entry(root, result)
+    except ValueError:
+        tkmsg.showinfo("Attention", result)
+    except TypeError:
+        # graph_expression(expression)
+        print "graph"
 
 
 def buttonPressed(canvas, e, line, direction):
