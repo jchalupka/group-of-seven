@@ -118,9 +118,9 @@ def function_window(root):
     sinh_button = tk.Button(top, text = "SINH", command=lambda:set_function(root,"sinh"))
     cosh_button = tk.Button(top, text = "COSH", command=lambda:set_function(root,"cosh")) 
     tanh_button = tk.Button(top, text = "TANH", command=lambda:set_function(root,"tanh"))
-    asinh_button = tk.Button(top, text = "ASINH", command=lambda:set_function(root,"sinh"))
-    acosh_button = tk.Button(top, text = "ACOSH", command=lambda:set_function(root,"cosh"))
-    atanh_button = tk.Button(top, text = "ATANH", command=lambda:set_function(root,"tanh"))
+    asinh_button = tk.Button(top, text = "ASINH", command=lambda:set_function(root,"asinh"))
+    acosh_button = tk.Button(top, text = "ACOSH", command=lambda:set_function(root,"acosh"))
+    atanh_button = tk.Button(top, text = "ATANH", command=lambda:set_function(root,"atanh"))
 
     sinh_button.grid(row=1, column=1, ipady=5, sticky=tk.N+tk.W+tk.E)
     cosh_button.grid(row=2, column=1, ipady=5, sticky=tk.N+tk.W+tk.E)
