@@ -21,7 +21,7 @@ FUNCTION = {}
 
 PARENTHESES = set("()")
 
-points = [[] for i in range(7)]
+points = []
 
 def add_operator(symbol, associativity, precedence, operation):
     OPERATORS.add(symbol)
@@ -353,12 +353,13 @@ def evaluate_postfix(expression):
     while expression:
         token = expression.pop(0)
 
+        if token == 'pi':
+            token = str(math.pi)
+        elif token == 'e':
+            token = str(math.e)
+
         if re.match(OPERAND_REGEX, token):
             output_stack.append(token)
-        elif token == "pi":
-            output_stack.append("pi")
-        elif token == "e":
-            output_stack.append("e")
         elif token == "!":
             operand = output_stack.pop()
             result = evaluate_unary_expression(token, operand)
