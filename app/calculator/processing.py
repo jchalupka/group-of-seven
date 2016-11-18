@@ -19,6 +19,7 @@ FUNCTION = {}
 
 PARENTHESES = set("()")
 
+points = []
 
 def add_operator(symbol, associativity, precedence, operation):
     OPERATORS.add(symbol)
@@ -80,11 +81,22 @@ def variable_in_expression(expression):
         return False
 
 
+def fix_negatives(expression):
+    print 'working on it'
+    # for index, token in enumerate(expression):
+    #     if not token[0] 
+    #     if token[index] is '-':
+    #         expression[index] = '+'
+    #         expression.insert(index+1, token)
+
 def evaluate_expression(expression, range):
-    infix_expression = valid_arithmetic_expression(expression)    
+    infix_expression = valid_arithmetic_expression(expression) 
+
     if find_error(infix_expression):
         return infix_expression
     
+    expression = fix_negatives(expression)
+
     postfix_expression = infix_to_postfix(infix_expression) 
     if find_error(postfix_expression):
         return postfix_expression
