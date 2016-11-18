@@ -57,10 +57,10 @@ def checkRange(points):
 def create_marker_points(canvas, w, h, step_x, step_y,max_range):
     i=0
     points = [-3,-2,-1,0,1,2,3]
-    print points
+    #print points
 
     points=[x*max_range for x in points]
-    print points
+    #print points
     #points = checkRange(points)
 
     while(i * step_x < w or i * step_y < h):

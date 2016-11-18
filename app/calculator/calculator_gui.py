@@ -20,12 +20,12 @@ axis_line_color = "black"
 
 def getPoints():
     import processing
-    return processing.points
+    return processing.points[0]
 
 def setPoints(new_points):
     import processing
-    processing.points = new_points
-    print new_points
+    processing.points[0] = new_points
+    #print new_points
     
 
 def getRange():
@@ -64,7 +64,7 @@ def execute_entry(root):
     expression = entry.get()
 
     result = processing.evaluate_expression(expression, getRange()*100)
-    print result
+    #print result
     try:
         float(result)
         add_to_entry(root, " = ")
@@ -282,6 +282,7 @@ def create_widgets(root):
     clear = tk.Button(root, text="Clear", highlightbackground="gray39", command=lambda:clear_entry(root))
     
     go = tk.Button(root, text="=", highlightbackground="gray39")
+    #go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, getRange()))
     go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, getRange()))
 
     load = tk.Button(root, text="Load", highlightbackground="gray75", command=lambda:load_file(root, "Load"))

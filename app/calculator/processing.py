@@ -21,7 +21,7 @@ FUNCTION = {}
 
 PARENTHESES = set("()")
 
-points = []
+points = [[] for i in range(7)]
 
 def add_operator(symbol, associativity, precedence, operation):
     OPERATORS.add(symbol)
