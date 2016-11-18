@@ -34,13 +34,12 @@ def configure_grid(root):
         for row in range(MAX_ROWS):
             root.rowconfigure(row, weight=1)
 
-def create_marker_points(canvas, w, h, step_x, step_y):
+def create_marker_points(canvas, w, h, step_x, step_y,max_range):
     i=0
-    global rangeVal
-    print "In graph" + str(rangeVal)
+    print max_range
+    print "In graph " + str(max_range)
     points = [-3,-2,-1,0,1,2,3]
-    points=[x*rangeVal for x in points]
-    print rangeVal
+    points=[x*max_range for x in points]
     print points
 
     while(i * step_x < w or i * step_y < h):
@@ -79,7 +78,7 @@ def draw_graph_backgroundButton(canvas, max_range):
 
     draw_grid_lines(canvas, w, h, step_x, step_y)
     draw_axis_lines(canvas, w, h)
-    create_marker_points(canvas, w, h, step_x, step_y)
+    create_marker_points(canvas, w, h, step_x, step_y,max_range)
 
 
 
@@ -92,36 +91,8 @@ def draw_graph_background(canvas, event, max_range):
 
     draw_grid_lines(canvas, w, h, step_x, step_y)
     draw_axis_lines(canvas, w, h)
+    create_marker_points(canvas, w, h, step_x, step_y,max_range)
 
-
-    # Draw Grid Lines
-    i = 0
-    while (i * step_x < w or i * step_y < h):
-        canvas.create_line(i * step_x, 0, i * step_x, h, fill=grid_line_color, tags="background")
-        canvas.create_line(0,i * step_y, w, i * step_y, fill=grid_line_color, tags="background")
-        i += 1
-    canvas.create_rectangle(0, 0, w, h, width=10, outline=behind_canvas_color, tags="background")
-
-
-    # Draw Axis Lines
-    canvas.create_line(0, h/2, w, h/2, width=2, fill=axis_line_color, tags="background")
-    canvas.create_line(w/2, 0, w/2, h, width=2, fill=axis_line_color, tags="background")
-
-    ## Create Marker Points
-    i=0
-    points = [-3,-2,-1,0,1,2,3]
-    points=[x*rangeVal for x in points]
-
-    while(i * step_x < w or i * step_y < h):
-        canvas.create_line(i * step_x, h/2 - 5, i * step_x, h/2 + 5, width=1.5, fill=axis_line_color, tags="background")
-        canvas.create_line(w/2 - 5, i * step_y, w/2 + 5, i * step_y, width=1.5, fill=axis_line_color, tags="background")
-
-        #multiply by range
-        #### Axis Lables
-        canvas.create_text(i * step_x, h/2 + 15, text=str(points[i]), tags="background")
-        canvas.create_text(w/2 - 15, i * step_y, text=str(points[6-i]), tags="background")
-        i+=1
-    canvas.tag_lower('background')
 
 
 
