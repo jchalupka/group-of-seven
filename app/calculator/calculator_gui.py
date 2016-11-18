@@ -66,10 +66,12 @@ def execute_entry(root):
     expression = entry.get()
 
     result = processing.evaluate_expression(expression, get_range()*100)
+    print result
     try:
         float(result)
         add_to_entry(root, " = ")
-        if result > 1000000 or result < 1/1000000:
+        if (abs(int(result)) > 1000000):
+            print 'weird'
             result = '{:.2e}'.format(float(result))
         add_to_entry(root, result)
     except ValueError:
