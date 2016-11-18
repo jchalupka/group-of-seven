@@ -143,7 +143,7 @@ def draw_graph_background(canvas, event, max_range):
 
 
 def window_resize(canvas, e, line):
-    draw_graph_background(canvas, e, calculator_gui.getPoints())
+    draw_graph_background(canvas, e, calculator_gui.get_points())
     draw_line(canvas, e, line)
 
 
