@@ -99,13 +99,14 @@ def window_resize(canvas, e, line):
 
 def function_window(root):
     top = tk.Toplevel(master=root)
+    top.geometry('+955+100')
     #Trigometric Functions
-    sin_button = tk.Button(top, text = "SIN", command=lambda:set_function(root,"sin"))
-    cos_button = tk.Button(top, text = "COS", command=lambda:set_function(root,"cos"))
-    tan_button = tk.Button(top, text = "TAN", command=lambda:set_function(root,"tan"))
-    asin_button = tk.Button(top, text = "ASIN", command=lambda:set_function(root,"asin"))
-    acos_button = tk.Button(top, text = "ACOS", command=lambda:set_function(root,"acos"))
-    atan_button = tk.Button(top, text = "ATAN", command=lambda:set_function(root,"atan"))
+    sin_button = tk.Button(top, text = "SIN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"sin"))
+    cos_button = tk.Button(top, text = "COS", highlightbackground="DarkOrange1", command=lambda:set_function(root,"cos"))
+    tan_button = tk.Button(top, text = "TAN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"tan"))
+    asin_button = tk.Button(top, text = "ASIN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"asin"))
+    acos_button = tk.Button(top, text = "ACOS", highlightbackground="DarkOrange1", command=lambda:set_function(root,"acos"))
+    atan_button = tk.Button(top, text = "ATAN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"atan"))
     
     sin_button.grid(row=1, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
     cos_button.grid(row=2, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
@@ -115,12 +116,12 @@ def function_window(root):
     atan_button.grid(row=6, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
 
     #Hyperbolic Functions
-    sinh_button = tk.Button(top, text = "SINH", command=lambda:set_function(root,"sinh"))
-    cosh_button = tk.Button(top, text = "COSH", command=lambda:set_function(root,"cosh")) 
-    tanh_button = tk.Button(top, text = "TANH", command=lambda:set_function(root,"tanh"))
-    asinh_button = tk.Button(top, text = "ASINH", command=lambda:set_function(root,"asinh"))
-    acosh_button = tk.Button(top, text = "ACOSH", command=lambda:set_function(root,"acosh"))
-    atanh_button = tk.Button(top, text = "ATANH", command=lambda:set_function(root,"atanh"))
+    sinh_button = tk.Button(top, text = "SINH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"sinh"))
+    cosh_button = tk.Button(top, text = "COSH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"cosh")) 
+    tanh_button = tk.Button(top, text = "TANH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"tanh"))
+    asinh_button = tk.Button(top, text = "ASINH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"asinh"))
+    acosh_button = tk.Button(top, text = "ACOSH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"acosh"))
+    atanh_button = tk.Button(top, text = "ATANH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"atanh"))
 
     sinh_button.grid(row=1, column=1, ipady=5, sticky=tk.N+tk.W+tk.E)
     cosh_button.grid(row=2, column=1, ipady=5, sticky=tk.N+tk.W+tk.E)
@@ -130,18 +131,18 @@ def function_window(root):
     atanh_button.grid(row=6, column=1, ipady=5, sticky=tk.N+tk.W+tk.E)
 
     # Number-theoretic and representation functions
-    ceil_button = tk.Button(top, text = "CEIL", command=lambda:set_function(root,"ceil"))
-    floor_button = tk.Button(top, text ="FLOOR", command=lambda:set_function(root,"floor"))
-    abs_button = tk.Button(top, text="ABS", command=lambda:set_function(root,"abs"))
+    ceil_button = tk.Button(top, text = "CEIL", highlightbackground="DarkOrange1", command=lambda:set_function(root,"ceil"))
+    floor_button = tk.Button(top, text ="FLOOR", highlightbackground="DarkOrange1", command=lambda:set_function(root,"floor"))
+    abs_button = tk.Button(top, text="ABS", highlightbackground="DarkOrange1", command=lambda:set_function(root,"abs"))
 
     ceil_button.grid(row=1, column=2, ipady=5, sticky=tk.N+tk.W+tk.E)
     floor_button.grid(row=2, column=2, ipady=5, sticky=tk.N+tk.W+tk.E)
     abs_button.grid(row=3, column=2, ipady=5, sticky=tk.N+tk.W+tk.E)
 
     # Power and logarithmic functions
-    sqrt_button = tk.Button(top, text = "SQRT", command=lambda:set_function(root,"sqrt"))
-    log_button = tk.Button(top, text = "LOG", command=lambda:set_function(root,"log"))
-    ln_button = tk.Button(top, text = "LN", command=lambda:set_function(root,"ln"))
+    sqrt_button = tk.Button(top, text = "SQRT", highlightbackground="DarkOrange1", command=lambda:set_function(root,"sqrt"))
+    log_button = tk.Button(top, text = "LOG", highlightbackground="DarkOrange1", command=lambda:set_function(root,"log"))
+    ln_button = tk.Button(top, text = "LN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"ln"))
 
     sqrt_button.grid(row=4, column=2, ipady=5, sticky=tk.N+tk.W+tk.E)
     log_button.grid(row=5, column=2, ipady=5, sticky=tk.N+tk.W+tk.E)
@@ -230,7 +231,7 @@ def create_widgets(root):
     eight = tk.Button(root, text="8", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "8"))
     nine = tk.Button(root, text="9", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "9"))
     divide = tk.Button(root, text=u"\u00F7", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "/"))
-    function_button = tk.Button(root, text="Functions", highlightbackground="DarkOrange1", command=lambda:function_window(root))
+    function_button = tk.Button(root, text="Functions", highlightbackground="gray", command=lambda:function_window(root))
 
     four = tk.Button(root, text="4", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "4"))
     five = tk.Button(root, text="5", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "5"))
@@ -315,7 +316,7 @@ def create_widgets(root):
     two.grid(row=11, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     three.grid(row=11, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     subtract.grid(row=11, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
-    function_button.grid(row=13, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
+    function_button.grid(row=13, column=6, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
     
     zero.grid(row=12, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     decimal.grid(row=12, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
