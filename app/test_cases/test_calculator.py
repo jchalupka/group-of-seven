@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import app.calculator.processing as pro
-import app.calculator.expression_validator as valid
 import unittest
 
 
@@ -110,8 +109,71 @@ class TestProcessing(unittest.TestCase):
         self.assertEqual(pro.evaluate_unary_expression("log", "10"), 1)
         self.assertEqual(pro.evaluate_unary_expression("ln", "10"), 2.3978952727983707)
 
-    def test_get_xy_values(self):
-        self.assertEqual(pro.get_xy_values(["x", "2", "-"], 4), [(-2.0, -4.0), (-1.75, -3.75), (-1.5, -3.5), (-1.25, -3.25), (-1.0, -3.0), (-0.75, -2.75), (-0.5, -2.5), (-0.25, -2.25), (0.0, -2.0), (0.25, -1.75), (0.5, -1.5), (0.75, -1.25), (1.0, -1.0), (1.25, -0.75), (1.5, -0.5), (1.75, -0.25), (2.0, 0.0), (2.25, 0.25), (2.5, 0.5), (2.75, 0.75), (3.0, 1.0), (3.25, 1.25), (3.5, 1.5), (3.75, 1.75), (4.0, 2.0)])
+    def is_valid(self, expression):
+        valid_a = pro.valid_arithmatic_expression(expression)
+        valid_p = pro.valid_arithmatic_expression(expression)
+
+        if not (valid_a and valid_p):
+            return False
+        return True
+
+
+    def test_validator(self):
+        # VALID TESTS
+        self.assertTrue(is_valid('4'))
+        self.assertTrue(is_valid('1-2'))
+        self.assertTrue(is_valid('2 * 2 + 3'))
+        self.assertTrue(is_valid('(2 * 2) + 3'))
+        self.assertTrue(is_valid('2/1 * (3 * -4)'))
+        self.assertTrue(is_valid('x + x'))
+        self.assertTrue(is_valid('y = x+x'))
+        self.assertTrue(is_valid('y = x/2'))
+        self.assertTrue(is_valid('y = (x/3 + x)'))
+        self.assertTrue(is_valid('y = (  (x + 4) * 2 - 3  )'))
+        self.assertTrue(is_valid('y = (x-x)/(2+60*x)-( x*100)'))
+        self.assertTrue(is_valid('y = sin(x)'))
+        self.assertTrue(is_valid('sin(x)'))
+        self.assertTrue(is_valid('tan(x)'))
+        self.assertTrue(is_valid('y = 2 * (sin(x) + 2/5) - tan(7000)'))
+        self.assertTrue(is_valid('2.5 * 9.001'))
+        self.assertTrue(is_valid('y=x'))
+        self.assertTrue(is_valid('y=1'))
+        self.assertTrue(is_valid('y = 2+2'))
+        self.assertTrue(is_valid('y = 2+ x'))
+        self.assertTrue(is_valid('pi'))
+        self.assertTrue(is_valid('y = pi'))
+        self.assertTrue(is_valid('2 * -pi'))
+        self.assertTrue(is_valid('pi * pi'))
+        self.assertTrue(is_valid(' y = pi'))
+        self.assertTrue(is_valid('sin(20 * 16 - 5)/2'))
+        self.assertTrue(is_valid('sin(20^5)'))
+        self.assertTrue(is_valid('sin(cos(tan 50))'))
+        self.assertTrue(is_valid('5!'))
+        self.assertTrue(is_valid('1-2'))
+        
+        #INVALID TESTS
+        self.assertFalse(is_valid('y = helloWorld'))
+        self.assertFalse(is_valid('20x'))
+        self.assertFalse(is_valid('4 y'))
+        self.assertFalse(is_valid('x+ '))
+        self.assertFalse(is_valid('+123'))
+        self.assertFalse(is_valid('( x + y'))
+        self.assertFalse(is_valid('(m + n'))
+        self.assertFalse(is_valid('xy)'))
+        self.assertFalse(is_valid('(y 10)'))
+        self.assertFalse(is_valid('(x - 61) - (2-400))'))
+        self.assertFalse(is_valid('(a-b/(x*y)'))
+        self.assertFalse(is_valid('(a+b)/((c-100)20'))
+        self.assertFalse(is_valid('(i- j)(t+k )'))
+        self.assertFalse(is_valid('y='))
+        self.assertFalse(is_valid('y=y'))
+        self.assertFalse(is_valid('a+1'))
+        self.assertFalse(is_valid('y = a + b'))
+        self.assertFalse(is_valid('y = y + 2'))
+        self.assertFalse(is_valid(''))
+        self.assertFalse(is_valid('y'))
+        self.assertFalse(is_valid('s'))
+        self.assertFalse(is_valid('helloWorld'))
 
 if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(TestProcessing)
