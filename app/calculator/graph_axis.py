@@ -24,7 +24,7 @@ behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
-rangeVal = 1
+rangeVal = 1.0
 
 
 # sets column width and allows for window resizing

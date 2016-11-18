@@ -29,7 +29,7 @@ def setRange(val):
 
 def rangeIncre():
     rangeVal = getRange()
-    temp = rangeVal*2
+    temp = rangeVal*2.0
     if(rangeVal<9223372036854775807):
         setRange(temp)
 
@@ -39,7 +39,7 @@ def rangeIncre():
 def rangeDecre():
     rangeVal = getRange()
     temp = rangeVal
-    temp = temp/2
+    temp = temp/2.0
     if(temp>0):
         setRange(temp)
     print "Range: " + str(rangeVal)
