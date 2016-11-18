@@ -213,21 +213,26 @@ def fix_negatives(expression):
             expression.insert(i, "-")
 
 
-def remove_y(expression):
+def remove_y(expression): 
     if re.match('[yY]\s*=.*', ''.join(expression[0:2])):
         if (expression[1].split('=')[1] != ''):
-            expression.insert(2, expression[1].split('=')[1])
+            expression.insert(2,expression[1].split('=')[1])
         expression = expression[2:]
+    return expression
+
 
 
 def to_expression_list(expression):
+    
     expression = expression.lower()
     expression = expression.replace(' ', '')
     expression = re.compile(TOKEN_REGEX).split(expression)
     expression = filter(None, expression)
+    expression = remove_y(expression)
+
 
     fix_negatives(expression)
-    remove_y(expression)
+    
 
     return expression
 
@@ -308,7 +313,6 @@ def get_xy_values(postfix_expression, max):
 
         x += step
 
-    print xy_values
     return xy_values
 
 
