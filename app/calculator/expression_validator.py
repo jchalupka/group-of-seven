@@ -71,7 +71,7 @@ def valid_parentheses(expression):
 #
 def valid_arithmetic_expression(expression):
     expression = to_expression_list(expression)
-
+    print "This is the expression " + str(expression)
     # Now we have an expression in list form seperated into individual componenets
     # eg ['29', '**', '(', '59', '+', '4', '-', '3', ')', '/', '6']
 
@@ -84,7 +84,7 @@ def valid_arithmetic_expression(expression):
     symbols += ['-' + symbol for symbol in symbols]
 
     stack = expression;
-    #print stack
+    print stack
     for token in expression:
         if token in symbols:
             loc = expression.index(token)
@@ -102,7 +102,7 @@ def valid_arithmetic_expression(expression):
                     expression[loc] = '1'
                 expression.insert(loc+1, '*')
 
-    #print stack
+    print stack
 
     # State 0 can accept number, letter or (
     # State 1 can accept operation or )
@@ -125,7 +125,7 @@ def valid_arithmetic_expression(expression):
 
     while len(stack) > 0:
         token = stack.pop(0)
-        #print token
+        print token
         if state is 0:
             if re.match('^-*x|-*\.[0-9]+|-*[0-9]+\.[0-9]+|-*[0-9]+$',token):
                 state = 1
@@ -201,66 +201,66 @@ def test(expression):
 def run_valid_tests():
     correct = 0
     print 'VALID TESTS'
-    if test('4'): correct += 1
-    if test('1-2'): correct  += 1
-    if test('2 * 2 + 3'): correct += 1
-    if test('(2 * 2) + 3'): correct += 1
-    if test('2/1 * (3 * -4)'): correct += 1
-    if test('x + x'): correct += 1
-    if test('y = x+x'): correct += 1
-    if test('y = x/2'): correct  += 1
-    if test('y = (x/3 + x)'): correct  += 1
-    if test('y = (  (x + 4) * 2 - 3  )'): correct  += 1
-    if test('y = (x-x)/(2+60*x)-( x*100)'): correct  += 1
-    if test('y = sin(x)'): correct += 1
-    if test('sin(x)'): correct += 1
-    if test('tan(x)'): correct += 1
-    if test('y = 2 * (sin(x) + 2/5) - tan(7000)'): correct += 1
-    if test('2.5 * 9.001'): correct += 1
+    # if test('4'): correct += 1
+    # if test('1-2'): correct  += 1
+    # if test('2 * 2 + 3'): correct += 1
+    # if test('(2 * 2) + 3'): correct += 1
+    # if test('2/1 * (3 * -4)'): correct += 1
+    # if test('x + x'): correct += 1
+    # if test('y = x+x'): correct += 1
+    # if test('y = x/2'): correct  += 1
+    # if test('y = (x/3 + x)'): correct  += 1
+    # if test('y = (  (x + 4) * 2 - 3  )'): correct  += 1
+    # if test('y = (x-x)/(2+60*x)-( x*100)'): correct  += 1
+    # if test('y = sin(x)'): correct += 1
+    # if test('sin(x)'): correct += 1
+    # if test('tan(x)'): correct += 1
+    # if test('y = 2 * (sin(x) + 2/5) - tan(7000)'): correct += 1
+    # if test('2.5 * 9.001'): correct += 1
 
-    if test('y=x'): correct += 1
-    if test('y=1'): correct += 1
-    if test('y = 2+2'): correct +=1
-    if test('y = 2+ x'): correct +=1
-    if test('pi'): correct += 1
-    if test('y = pi'): correct += 1
-    if test('2 * -pi'): correct += 1
-    if test('pi * pi'): correct += 1
-    if test(' y = pi'): correct += 1
-    if test('sin(20 * 16 - 5)/2'): correct += 1
-    if test('sin(20^5)'): correct += 1
-    if test('sin(cos(tan 50))'): correct += 1
-    if test('5!'): correct += 1
-
+    # if test('y=x'): correct += 1
+    # if test('y=1'): correct += 1
+    # if test('y = 2+2'): correct +=1
+    # if test('y = 2+ x'): correct +=1
+    # if test('pi'): correct += 1
+    # if test('y = pi'): correct += 1
+    # if test('2 * -pi'): correct += 1
+    # if test('pi * pi'): correct += 1
+    # if test(' y = pi'): correct += 1
+    # if test('sin(20 * 16 - 5)/2'): correct += 1
+    # if test('sin(20^5)'): correct += 1
+    # if test('sin(cos(tan 50))'): correct += 1
+    # if test('5!'): correct += 1
+    if test('1-2'): correct += 1;
     print 'END OF VALID TESTS'
     print correct,'/ 29 Correct.'
 
 def run_invalid_tests():
     correct = 0
-    print 'INVALID TESTS'
-    if not test('y = helloWorld'): correct += 1
-    if not test('20x'): correct += 1
-    if not test('4 y'): correct += 1
-    if not test('x+ '): correct += 1
-    if not test('+123'): correct += 1
-    if not test('( x + y'): correct += 1
-    if not test('(m + n'): correct += 1
-    if not test('xy)'): correct += 1
-    if not test('(y 10)'): correct += 1
-    if not test('(x - 61) - (2-400))'): correct += 1
-    if not test('(a-b/(x*y)'): correct += 1
-    if not test('(a+b)/((c-100)20'): correct += 1
-    if not test('(i- j)(t+k )'): correct += 1
+    # print 'INVALID TESTS'
+    # if not test('y = helloWorld'): correct += 1
+    # if not test('20x'): correct += 1
+    # if not test('4 y'): correct += 1
+    # if not test('x+ '): correct += 1
+    # if not test('+123'): correct += 1
+    # if not test('( x + y'): correct += 1
+    # if not test('(m + n'): correct += 1
+    # if not test('xy)'): correct += 1
+    # if not test('(y 10)'): correct += 1
+    # if not test('(x - 61) - (2-400))'): correct += 1
+    # if not test('(a-b/(x*y)'): correct += 1
+    # if not test('(a+b)/((c-100)20'): correct += 1
+    # if not test('(i- j)(t+k )'): correct += 1
 
-    if not test('y='): correct += 1
-    if not test('y=y'): correct += 1
-    if not test('a+1'): correct += 1
-    if not test('y = a + b'): correct += 1
-    if not test('y = y + 2'): correct += 1
-    if not test(''): correct += 1
-    if not test('y'): correct += 1
-    if not test('s'): correct += 1
-    if not test('helloWorld'): correct += 1
+    # if not test('y='): correct += 1
+    # if not test('y=y'): correct += 1
+    # if not test('a+1'): correct += 1
+    # if not test('y = a + b'): correct += 1
+    # if not test('y = y + 2'): correct += 1
+    # if not test(''): correct += 1
+    # if not test('y'): correct += 1
+    # if not test('s'): correct += 1
+    # if not test('helloWorld'): correct += 1
     print 'END OF INVALID TESTS'
     print correct,'/ 22 Correct.'
 # End of tests

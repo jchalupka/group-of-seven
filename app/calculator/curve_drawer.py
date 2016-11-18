@@ -2,9 +2,17 @@
 
 #!/usr/bin/python
 from __future__ import division
+import calculator_gui
+import graph_axis
 import decimal
 import math
 import Tkinter as tk
+
+
+def show_new_line(root, e):
+	calculator_gui.execute_entry(root, e)
+	# graph_axis.window_resize(root, e, calculator_gui.getPoints())
+
 
 def line_maker(points):
 	first = True
@@ -35,14 +43,15 @@ def draw_curveButton(canvas,line, max_range):
 	canvas.delete('line')
 
 	w, h = int(canvas.winfo_width()), int(canvas.winfo_height())
-
-	calcHeight_Width(canvas, line, max_range, h,w)
+	# print line
+	# if not line:
+	# 	calcHeight_Width(canvas, line, max_range, h,w)
 
 # Put the points here <----
 def draw_curve(canvas, event, line, max_range): # <--- here
 	canvas.delete('line')
 
-	w, h = event.width, event.height
+	w, h = int(event.width), int(event.height)
 
 	calcHeight_Width(canvas, line, max_range, h,w)
 
@@ -57,15 +66,15 @@ def drange(x, y, jump):
     yield float(x)
     x += decimal.Decimal(jump)
 
-def generate_line(function):
-    #In future we should make a function that connects points and draws line segments insead of circles, maybe
-    line = list((x,1) for x in drange(-10,10, 1/pixels_per()))
+# def generate_line(function):
+#     #In future we should make a function that connects points and draws line segments insead of circles, maybe
+#     line = list((x,1) for x in drange(-10,10, 1/pixels_per()))
 
-    # This part will actually come from the function the user enters, this is just for a simple test
-    line = map(function, line)
-    return line
+#     # This part will actually come from the function the user enters, this is just for a simple test
+#     line = map(function, line)
+#     return line
 
 # This is just temporary and will be replaced by a function that the user gives
 def generate_function():
-    function = lambda x: (x[0], math.tan(x[0]*2))
+    function = lambda x: (x[0], math.sin(x[0]*2))
     return function

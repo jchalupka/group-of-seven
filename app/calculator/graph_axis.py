@@ -13,6 +13,7 @@
 # Feel free to edit anything or work away on pieces.
 #
 from __future__ import division
+import calculator_gui
 from math import *
 from decimal import *
 import Tkinter as tk
@@ -34,12 +35,30 @@ def configure_grid(root):
         for row in range(MAX_ROWS):
             root.rowconfigure(row, weight=1)
 
+def checkRange(points):
+    newList = []
+    counter = 0
+    for i in points:
+        if counter < 3:
+            if(i < -1000) or (i > -0.05):
+                newList.append('{:.1e}'.format(float(i)))
+            else:
+                newList.append(i)
+        elif counter > 3:
+            if(i > 1000) or (i < 0.05):
+                newList.append('{:.1e}'.format(float(i)))
+            else:
+                newList.append(i)
+        else:
+            newList.append(i)
+        counter += 1
+    return newList
+
 def create_marker_points(canvas, w, h, step_x, step_y,max_range):
     i=0
-    print max_range
-    print "In graph " + str(max_range)
     points = [-3,-2,-1,0,1,2,3]
     points=[x*max_range for x in points]
+    points = checkRange(points)
     print points
 
     while(i * step_x < w or i * step_y < h):
@@ -122,7 +141,7 @@ def draw_line(canvas, event, line):
 
 
 def window_resize(canvas, e, line):
-    draw_graph_background(canvas, e)
+    draw_graph_background(canvas, e, calculator_gui.getPoints())
     draw_line(canvas, e, line)
 
 
@@ -139,13 +158,13 @@ def pixels_per():
     pixels_per = 25
     return pixels_per
 
-def generate_line(function):
-    #In future we should make a function that connects points and draws line segments insead of circles, maybe
-    line = list((x,1) for x in drange(-10,10, 1/pixels_per()))
+# def generate_line(function):
+#     #In future we should make a function that connects points and draws line segments insead of circles, maybe
+#     line = list((x,1) for x in drange(-10,10, 1/pixels_per()))
 
-    # This part will actually come from the function the user enters, this is just for a simple test
-    line = map(function, line)
-    return line
+#     # This part will actually come from the function the user enters, this is just for a simple test
+#     line = map(function, line)
+#     return line
 
 def main():
     root = tk.Tk()

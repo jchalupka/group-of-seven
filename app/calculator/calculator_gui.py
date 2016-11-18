@@ -18,6 +18,16 @@ behind_canvas_color = "grey"
 grid_line_color = "cyan"
 axis_line_color = "black"
 
+def getPoints():
+    import processing
+    return processing.points
+
+def setPoints(new_points):
+    import processing
+    processing.points = new_points
+    print new_points
+    
+
 def getRange():
     import graph_axis
     return graph_axis.rangeVal
@@ -32,6 +42,8 @@ def rangeIncre():
     rangeVal = getRange()
     temp = rangeVal*2.0
     if(rangeVal<9223372036854775807):
+        if(temp >= 1.0):
+            temp = int(temp)
         setRange(temp)
 
     print "Range: " + str(rangeVal)
@@ -42,8 +54,27 @@ def rangeDecre():
     temp = rangeVal
     temp = temp/2.0
     if(temp>0):
+        if(temp >= 1.0):
+            temp = int(temp)
         setRange(temp)
     print "Range: " + str(rangeVal)
+
+def execute_entry(root, event):
+    entry = root.focus_get()
+    expression = entry.get()
+
+    result = processing.evaluate_expression(expression, getRange())
+    try:
+        float(result)
+        add_to_entry(root, " = ")
+        add_to_entry(root, result)
+    except ValueError:
+        tkmsg.showinfo("Attention", result)
+    except TypeError:
+        print (1,result)
+        setPoints(result)
+        print "graph"
+    print 'Made it here'
 
 # sets column width and allows for window resizing
 def configure_grid(root):
@@ -73,31 +104,18 @@ def set_function(root,text):
     entry.insert(tk.END,text)
 
 
-def execute_entry(root, status_bar):
-    entry = root.focus_get()
-    expression = entry.get()
-
-    result = processing.evaluate_expression(expression, getRange())
-    try:
-        float(result)
-        add_to_entry(root, " = ")
-        add_to_entry(root, result)
-    except ValueError:
-        tkmsg.showinfo("Attention", result)
-    except TypeError:
-        # graph_expression(expression)
-        print "graph"
-
 
 def buttonPressed(canvas, e, line, direction):
-
     if direction is 1:
         rangeIncre()
-    else:
+    elif direction is -1:
         rangeDecre()
+
     max_range = getRange()
     graph_axis.draw_graph_backgroundButton(canvas, max_range)
     curve_drawer.draw_curveButton(canvas, line, max_range)
+
+
 
 def window_resize(canvas, e, line):
     max_range = getRange()
@@ -253,15 +271,17 @@ def create_widgets(root):
     #Range up and down buttons, they call imported functions in graph_axis
     rangeUp = tk.Button(root,text=u"\u2191 ", highlightbackground="gray75")
     rangeDown = tk.Button(root,text=u"\u2193", highlightbackground="gray75")
-    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function), 1))
-    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(function),-1))
+    rangeUp.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(getPoints()), 1))
+    rangeDown.bind("<Button-1>", lambda e: buttonPressed(canvas, e, curve_drawer.generate_line(getPoints()),-1))
 
     zero = tk.Button(root, text="0", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "0"))
     decimal = tk.Button(root, text=".", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "."))
     negative = tk.Button(root, text=u"(\u2212)", highlightbackground="DarkOrange1", command=lambda:add_to_first(root, "-"))
     add = tk.Button(root, text="+", highlightbackground="DarkOrange1", command=lambda:add_to_entry(root, "+"))
     clear = tk.Button(root, text="Clear", highlightbackground="gray39", command=lambda:clear_entry(root))
-    go = tk.Button(root, text="=", highlightbackground="gray39", command=lambda:execute_entry(root, status_bar))
+    
+    go = tk.Button(root, text="=", highlightbackground="gray39")
+    go.bind("<Button-1>", lambda e: curve_drawer.show_new_line(canvas, e))
 
     load = tk.Button(root, text="Load", highlightbackground="gray75", command=lambda:load_file(root, "Load"))
     save = tk.Button(root, text="Save", highlightbackground="gray75", command=lambda:save_file(root, "Save"))
@@ -286,8 +306,7 @@ def create_widgets(root):
 
     canvas.grid(row=1, column=5, columnspan=9, rowspan=7, sticky=tk.N+tk.E+tk.S+tk.W)
     # generate function should be replaced by a function that gets the function from the user, and processes, etc
-    function = curve_drawer.generate_function()
-    canvas.bind("<Configure>", lambda e: window_resize(canvas, e, curve_drawer.generate_line(function)))
+    canvas.bind("<Configure>", lambda e: window_resize(canvas, e, getPoints()))
 
     x.grid(row=9, column=1, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     y.grid(row=9, column=2, ipadx=15, ipady=5, sticky=tk.W+tk.E)
