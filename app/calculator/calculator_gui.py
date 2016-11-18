@@ -31,34 +31,34 @@ def set_points(new_points):
 
 def get_range():
     import graph_axis
-    return graph_axis.rangeVal
+    return graph_axis.range_value
 
 
 def set_range(val):
     import graph_axis
-    graph_axis.rangeVal = val
+    graph_axis.range_value= val
 
 
 def range_increment():
-    rangeVal = get_range()
-    temp = rangeVal*2.0
-    if(rangeVal < 32):
+    range_value= get_range()
+    temp =range_value*2.0
+    if(range_value< 32):
         if(temp >= 1.0):
             temp = int(temp)
         set_range(temp)
 
-    print "Range: " + str(rangeVal)
+    print "Range: " + str(range_value)
 
 
 def range_decrement():
-    rangeVal = get_range()
-    temp = rangeVal
+    range_value= get_range()
+    temp =range_value
     temp = temp / 2.0
     if(temp > 0):
         if(temp >= 1.0):
             temp = int(temp)
         set_range(temp)
-    print "Range: " + str(rangeVal)
+    print "Range: " + str(range_value)
 
 
 def execute_entry(root):
