@@ -33,7 +33,7 @@ def rangeIncre():
     if(rangeVal<9223372036854775807):
         setRange(temp)
 
-    print "Range: " + str(rangeVal)
+    print "Range: " + str(getRange())
 
 
 def rangeDecre():
@@ -42,7 +42,7 @@ def rangeDecre():
     temp = temp/2
     if(temp>0):
         setRange(temp)
-    print "Range: " + str(rangeVal)
+    print "Range: " + str(getRange())
 
 # sets column width and allows for window resizing
 def configure_grid(root):
@@ -84,13 +84,14 @@ def execute_entry(root, status_bar):
 
 
 def buttonPressed(canvas, line, direction):
-    max_range = getRange()
-    graph_axis.draw_graph_backgroundButton(canvas, max_range)
-    curve_drawer.draw_curveButton(canvas, line, max_range)
+
     if direction is 1:
         rangeIncre()
     else:
         rangeDecre()
+    max_range = getRange()
+    graph_axis.draw_graph_backgroundButton(canvas, max_range)
+    curve_drawer.draw_curveButton(canvas, line, max_range)
 
 def window_resize(canvas, e, line):
     max_range = getRange()

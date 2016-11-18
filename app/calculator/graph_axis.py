@@ -34,13 +34,12 @@ def configure_grid(root):
         for row in range(MAX_ROWS):
             root.rowconfigure(row, weight=1)
 
-def create_marker_points(canvas, w, h, step_x, step_y):
+def create_marker_points(canvas, w, h, step_x, step_y,max_range):
     i=0
-    global rangeVal
-    print "In graph" + str(rangeVal)
+    print max_range
+    print "In graph " + str(max_range)
     points = [-3,-2,-1,0,1,2,3]
-    points=[x*rangeVal for x in points]
-    print rangeVal
+    points=[x*max_range for x in points]
     print points
 
     while(i * step_x < w or i * step_y < h):
@@ -79,7 +78,7 @@ def draw_graph_backgroundButton(canvas, max_range):
 
     draw_grid_lines(canvas, w, h, step_x, step_y)
     draw_axis_lines(canvas, w, h)
-    create_marker_points(canvas, w, h, step_x, step_y)
+    create_marker_points(canvas, w, h, step_x, step_y,max_range)
 
 
 
@@ -92,7 +91,7 @@ def draw_graph_background(canvas, event, max_range):
 
     draw_grid_lines(canvas, w, h, step_x, step_y)
     draw_axis_lines(canvas, w, h)
-    create_marker_points(canvas, w, h, step_x, step_y)
+    create_marker_points(canvas, w, h, step_x, step_y,max_range)
 
 
 
