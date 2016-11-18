@@ -11,9 +11,9 @@ import Tkinter as tk
 
 def show_new_line(root,max_range):
 	calculator_gui.execute_entry(root)
-	draw_curveButton(root, calculator_gui.getPoints(), max_range)
+	draw_curveButton(root, calculator_gui.get_points(), max_range)
 	# graph_axis.draw_graph_backgroundButton(root, max_range)
-	#graph_axis.draw_line_button(root,calculator_gui.getPoints())
+	#graph_axis.draw_line_button(root,calculator_gui.get_points())
 
 
 # def draw_line_button(canvas, line):
