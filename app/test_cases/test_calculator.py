@@ -71,16 +71,29 @@ class TestProcessing(unittest.TestCase):
         self.assertEqual(pro.evaluate_postfix(["1.0", "2.5", "-"]), "-1.5")
         self.assertEqual(pro.evaluate_postfix(["1", "2", "*"]), "2")
         self.assertEqual(pro.evaluate_postfix(["1", "2", "/"]), "0.5")
-        self.assertEqual(pro.evaluate_postfix(["20", "sin"]), "0.342020143326")
-        self.assertEqual(pro.evaluate_postfix(["1", "0", "/"]), "Divide by zero")
+        self.assertEqual(pro.evaluate_postfix(["pi", "6", "*"]), "18.8495559215")
+        self.assertEqual(pro.evaluate_postfix(["7.25", "floor"]), "7.0")
+        self.assertEqual(pro.evaluate_postfix(["7.25", "ceil"]), "8.0")
+        self.assertEqual(pro.evaluate_postfix(["20", "cos"]), "0.408082061813")
+        self.assertEqual(pro.evaluate_postfix(["20", "tan"]), "2.23716094422")
+        self.assertEqual(pro.evaluate_postfix(["1", "0", "/"]), "Divide by zero error")
+        self.assertEqual(pro.evaluate_postfix(["1", "asin"]), "1.57079632679")
+        self.assertEqual(pro.evaluate_postfix(["10", "asin"]), "Domain error")
+        self.assertEqual(pro.evaluate_postfix(["-1", "acos"]), "3.14159265359")
+        self.assertEqual(pro.evaluate_postfix(["10", "acos"]), "Domain error")
+        self.assertEqual(pro.evaluate_postfix(["-1", "atan"]), "-0.785398163397")
+        self.assertEqual(pro.evaluate_postfix(["3", "sinh"]), "10.0178749274")
+        self.assertEqual(pro.evaluate_postfix(["3", "cosh"]), "10.0676619958")
+        self.assertEqual(pro.evaluate_postfix(["3000", "cosh"]), "Out of range")
+        self.assertEqual(pro.evaluate_postfix(["3", "tanh"]), "0.995054753687")
+        self.assertEqual(pro.evaluate_postfix(["0.5", "asinh"]), "0.48121182506")
+        self.assertEqual(pro.evaluate_postfix(["1.4", "acosh"]), "0.867014726491")
+        self.assertEqual(pro.evaluate_postfix(["-1", "acosh"]), "Domain error")
+        self.assertEqual(pro.evaluate_postfix(["0.5", "atanh"]), "0.549306144334")
 
     def test_string_to_num(self):
         self.assertEqual(pro.string_to_num("1"), 1)
         self.assertEqual(pro.string_to_num("1.0"), 1.0)
-
-    def test_divide(self):
-        self.assertEqual(pro.divide(1, 2), 0.5)
-        self.assertEqual(pro.divide(1, 0), "Divide by zero")
 
     def test_evaluate_binary_expression(self):
         self.assertEqual(pro.evaluate_binary_expression("1", "/", "2"), 0.5)

@@ -12,7 +12,7 @@ import processing
 
 #  Updated to now check for functions, and defined symbols
 
-def gui_function_validator(expression, status_root):
+def gui_function_validator(expression):
     valid_p = valid_parentheses(expression)
     valid_a = valid_arithmetic_expression(expression)
 
@@ -25,8 +25,8 @@ def gui_function_validator(expression, status_root):
         else:
             answer = result_message(valid_p, valid_a)
     else:
-        if status_root is not None:
-            calculator_gui.update_status(status_root, '')
+        # if status_root is not None:
+        #     calculator_gui.update_status(status_root, '')
         print 'I\'m going to call Shuntingyard'
         term_list = to_expression_list(expression)
         print term_list
@@ -278,3 +278,5 @@ if __name__ == '__main__':
     main()
 
 #EOF
+
+print gui_function_validator("1-(-2)")

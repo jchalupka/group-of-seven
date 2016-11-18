@@ -368,7 +368,7 @@ def main():
         create_widgets(root)
         root.mainloop()
     elif len(sys.argv) == 2:
-        commandLine.main(sys,sys.argv[1])
+        command_line.main(sys,sys.argv[1])
     else:
         sys.exit("Error. Invalid number of arguments.")
 
