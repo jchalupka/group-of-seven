@@ -118,7 +118,7 @@ def buttonPressed(canvas, e, line, direction):
 
     max_range = get_range()
     graph_axis.draw_graph_backgroundButton(canvas, max_range)
-    curve_drawer.draw_curveButton(canvas, line, max_range)
+    curve_drawer.draw_curve_button(canvas, line, max_range)
 
 
 def window_resize(canvas, e, line):
