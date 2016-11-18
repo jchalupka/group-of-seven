@@ -302,10 +302,13 @@ def get_xy_values(postfix_expression, max):
             if y >= min and y <= max:
                 xy_values.append(tuple((x, y)))
         except ValueError:
-            return y
+            x += step
+            continue
+            #return y
 
         x += step
 
+    print xy_values
     return xy_values
 
 
