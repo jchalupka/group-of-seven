@@ -377,7 +377,6 @@ def evaluate_postfix(expression):
 
     return output_stack.pop()
 
-
 print evaluate_expression("1 - 3 / 2", 10)
 print evaluate_expression("-3", 10)
 print to_expression_list("-sin(5)")

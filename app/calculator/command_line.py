@@ -1,4 +1,4 @@
-import expression_validator
+#import expression_validator
 
 #Iterates through the expression list and evaluates each expression
 def calculate(expressions):
