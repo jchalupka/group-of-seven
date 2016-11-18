@@ -32,7 +32,7 @@ def rangeIncre():
     temp = rangeVal*2
     if(rangeVal<9223372036854775807):
         setRange(temp)
-       
+
     print "Range: " + str(rangeVal)
 
 
@@ -84,13 +84,14 @@ def execute_entry(root, status_bar):
 
 
 def buttonPressed(canvas, e, line, direction):
-    max_range = getRange()
-    graph_axis.draw_graph_backgroundButton(canvas, max_range)
-    curve_drawer.draw_curveButton(canvas, line, max_range)
+
     if direction is 1:
         rangeIncre()
     else:
         rangeDecre()
+    max_range = getRange()
+    graph_axis.draw_graph_backgroundButton(canvas, max_range)
+    curve_drawer.draw_curveButton(canvas, line, max_range)
 
 def window_resize(canvas, e, line):
     max_range = getRange()
@@ -107,7 +108,7 @@ def function_window(root):
     asin_button = tk.Button(top, text = "ASIN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"asin"))
     acos_button = tk.Button(top, text = "ACOS", highlightbackground="DarkOrange1", command=lambda:set_function(root,"acos"))
     atan_button = tk.Button(top, text = "ATAN", highlightbackground="DarkOrange1", command=lambda:set_function(root,"atan"))
-    
+
     sin_button.grid(row=1, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
     cos_button.grid(row=2, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
     tan_button.grid(row=3, column=0, ipady=5, sticky=tk.N+tk.W+tk.E)
@@ -117,7 +118,7 @@ def function_window(root):
 
     #Hyperbolic Functions
     sinh_button = tk.Button(top, text = "SINH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"sinh"))
-    cosh_button = tk.Button(top, text = "COSH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"cosh")) 
+    cosh_button = tk.Button(top, text = "COSH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"cosh"))
     tanh_button = tk.Button(top, text = "TANH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"tanh"))
     asinh_button = tk.Button(top, text = "ASINH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"asinh"))
     acosh_button = tk.Button(top, text = "ACOSH", highlightbackground="DarkOrange1", command=lambda:set_function(root,"acosh"))
@@ -317,7 +318,7 @@ def create_widgets(root):
     three.grid(row=11, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     subtract.grid(row=11, column=9, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     function_button.grid(row=13, column=6, columnspan=2, rowspan=2, ipadx=15, ipady=24, sticky=tk.W+tk.E)
-    
+
     zero.grid(row=12, column=6, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     decimal.grid(row=12, column=7, ipadx=15, ipady=5, sticky=tk.W+tk.E)
     negative.grid(row=12, column=8, ipadx=15, ipady=5, sticky=tk.W+tk.E)
