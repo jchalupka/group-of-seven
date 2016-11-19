@@ -174,7 +174,7 @@ def valid_arithmetic_expression(expression):
                     stack.insert(0, token[1:])
                 token = '-'
 
-            if re.match('^[\+\-\/\*\^]$', token):
+            if re.match('^[\+\-\/\*\^\%]$', token):
                 state = 0
             elif re.match('^\)$', token):
                 state = 1

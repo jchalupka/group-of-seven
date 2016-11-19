@@ -68,7 +68,7 @@ def execute_entry(root):
     try:
         result = float(result)
         add_to_entry(root, " = ")
-        if (abs(result) > 1000000.0 or abs(result) < 1/1000000.0):
+        if (abs(result) > 1000000.0 or abs(result) < 1/1000000.0 and result != 0):
             result = '{:.2e}'.format(float(result))
 
         add_to_entry(root, result)
