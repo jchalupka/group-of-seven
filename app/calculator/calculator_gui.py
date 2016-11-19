@@ -465,6 +465,7 @@ def create_widgets(root):
 def main():
     if len(sys.argv) == 1:
         root = tk.Tk()
+        root.title("Graphing Calculator")
         root.configure(bg="gray75")
         configure_grid(root)
         create_widgets(root)
